@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Download-Pdf{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div style="display: flex; justify-content: center; margin: 20px;">
+        <h1>Download Pdf</h1>
+    </div>
+    <form action="{% url 'download_pdf' %}" method="post" class="p-4 shadow rounded bg-white">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="from_date" class="form-label">From:</label>
+            <input type="date" id="from_date" name="from_date" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="to_date" class="form-label">To:</label>
+            <input type="date" id="to_date" name="to_date" class="form-control" required>
+        </div>
+
+        <div class="modal-footer mt-3 gap-2">
+            <a href="{% url 'record_list' %}" class="btn btn-secondary" >Cancel</a>
+            <button type="submit" class="btn btn-primary" style="background-color:#005f73;">Download</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

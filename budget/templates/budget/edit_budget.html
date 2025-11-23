@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Edit Budget{% endblock %}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Edit Budget</h2>
+
+  <form method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="name" class="form-label">Budget Name</label>
+      <input type="text" id="name" name="name" value="{{ budget.name }}" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="amount" class="form-label">Amount (₹)</label>
+      <input type="number" id="amount" name="amount" value="{{ budget.amount }}" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="start_date" class="form-label">Start Date</label>
+      <input type="date" id="start_date" name="start_date" value="{{ budget.start_date|date:'Y-m-d' }}" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="end_date" class="form-label">End Date</label>
+      <input type="date" id="end_date" name="end_date" value="{{ budget.end_date|date:'Y-m-d' }}" class="form-control" required>
+    </div>
+
+    <div class="text-center">
+      <button type="submit" class="btn btn-warning">Save Changes</button>
+      <a href="{% url 'budget_list' %}" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

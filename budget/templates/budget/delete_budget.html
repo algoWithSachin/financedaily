@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}delete-budget{% endblock  %}
+
+<body>
+    {% block content %}
+    <div class="container mt-5 text-center">
+        <H1>Delete Budget</H1>
+
+<p>
+  Are you sure you want to delete this budget?  
+  <br>
+  If you proceed, all recent expense records linked to this budget will also be permanently removed.
+</p>
+
+
+        <form method="POST">
+        {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a href="{% url 'budget_list' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+        
+
+
+    {% endblock  %}
+</body>

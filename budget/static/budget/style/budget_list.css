@@ -1,0 +1,88 @@
+:root {
+  --navbar-color: #005f73;
+  --income: #0a9396;
+  --expense: #bb3e03;
+  --budget: #94d2bd;
+  --light-bg: #f1f5f7;
+  --text-dark: #001219;
+}
+
+/* General */
+body {
+  background-color: var(--light-bg);
+  color: var(--text-dark);
+  font-family: 'Poppins', sans-serif;
+}
+
+.page-title {
+  color: var(--navbar-color);
+  font-weight: 600;
+}
+
+/* Add Button */
+.btn-add {
+  background-color: var(--navbar-color);
+  color: #fff;
+  border: none;
+  transition: 0.3s;
+}
+.btn-add:hover {
+  background-color: #0a9396;
+}
+
+/* Budget Card */
+.budget-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  border: 1px solid #e3e3e3;
+}
+.budget-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+.card-header h4 {
+  color: var(--navbar-color);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.period {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Progress Bar */
+.progress-bar-container {
+  width: 100%;
+  background-color: #e9ecef;
+  height: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+
+/* Buttons */
+.btn-edit {
+  background-color: #0a9396;
+  color: white;
+}
+.btn-edit:hover {
+  background-color: #007f87;
+}
+
+.btn-reset {
+  background-color: #bb3e03;
+  color: white;
+}
+.btn-reset:hover {
+  background-color: #a62f02;
+}

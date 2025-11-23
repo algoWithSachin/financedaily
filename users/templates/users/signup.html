@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{%load static%}
+{% block title %} Signup | Expense Tracker {% endblock  %}
+{% block style %}  <link rel="stylesheet" href="{% static 'users/style/signup.css'%}">{% endblock  %}
+
+<body>
+    <div class="main">
+    {% block content %}
+    <div class="container">
+        <div class="form-box">
+            <h2>Create Account</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="input-group">
+                    <label>First Name</label>
+                    <input type="text" name="firstname" placeholder="Enter your first name" required>
+                </div>
+                <div class="input-group">
+                    <label>Last Name</label>
+                    <input type="text" name="lastname" placeholder="Enter your last name" required>
+                </div>
+                <div class="input-group">
+                    <label>Username</label>
+                    <input type="text" name="username" placeholder="Enter your username" required>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" name="password1" placeholder="Enter your password" required>
+                </div>
+                <div class="input-group">
+                    <label>Confirm Password</label>
+                    <input type="password" name="password2" placeholder="Confirm password" required>
+                </div>
+                <button type="submit" class="btn">Sign Up</button>
+                <p class="redirect">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock  %}
+</body>
+

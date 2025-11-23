@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}edit-record{% endblock  %}
+{% block style %} <link rel="stylesheet" href="{% static "record/style/edit_record.css" %}">{% endblock  %}
+
+
+<body>
+    {% block content %}
+
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Edit Record</h2>
+
+  <form method="POST" >
+    {% csrf_token %}
+    
+    <div class="mb-3">
+      <label for="date" class="form-label">Date</label>
+      <input type="date" name="date" id="date" class="form-control" value="{{ record.date|date:'Y-m-d' }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="type" class="form-label">Type</label>
+      <select name="type" id="type" class="form-select" required>
+        <option value="Income" {% if record.type == 'Income' %}selected{% endif %}>Income</option>
+        <option value="Expense" {% if record.type == 'Expense' %}selected{% endif %}>Expense</option>
+      </select>
+    </div>
+
+ <div class="mb-3">
+  <label for="category" class="form-label">Category</label>
+  <select id="category" name="category" class="form-select" required>
+    <option value="" disabled {% if not record.category %}selected{% endif %}>-- Select Category --</option>
+
+    <optgroup label="Income">
+      <option value="salary" {% if record.category == 'salary' %}selected{% endif %}>Salary</option>
+      <option value="freelance" {% if record.category == 'freelance' %}selected{% endif %}>Freelance</option>
+      <option value="investments" {% if record.category == 'investments' %}selected{% endif %}>Investments</option>
+      <option value="gifts" {% if record.category == 'gifts' %}selected{% endif %}>Gifts</option>
+      <option value="bonus" {% if record.category == 'bonus' %}selected{% endif %}>Bonus</option>
+    </optgroup>
+
+    <optgroup label="Expense">
+      <option value="food" {% if record.category == 'food' %}selected{% endif %}>Food</option>
+      <option value="transport" {% if record.category == 'transport' %}selected{% endif %}>Transport</option>
+      <option value="entertainment" {% if record.category == 'entertainment' %}selected{% endif %}>Entertainment</option>
+      <option value="bills" {% if record.category == 'bills' %}selected{% endif %}>Bills</option>
+      <option value="shopping" {% if record.category == 'shopping' %}selected{% endif %}>Shopping</option>
+    </optgroup>
+
+    <option value="other" {% if record.category == 'other' %}selected{% endif %}>Other</option>
+  </select>
+  </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <textarea name="description" id="description" class="form-control">{{ record.description }}</textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="amount" class="form-label">Amount</label>
+      <input type="number" name="amount" id="amount" class="form-control" value="{{ record.amount }}" required>
+    </div>
+    <div class="text-center">
+      <button type="submit" class="btn btn-warning">Save</button>
+      <a href="{{ request.META.HTTP_REFERER|default:'/' }}" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+</body>

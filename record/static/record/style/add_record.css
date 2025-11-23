@@ -1,0 +1,11 @@
+.btn-add  {
+    background-color: #005f73;
+    color: white;
+    width: 100px;
+}
+
+.btn-add:hover  {
+    background-color: #044b59;
+    color: white;
+    width: 100px;
+}

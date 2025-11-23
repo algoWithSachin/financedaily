@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Budgets - FinTrack{% endblock %}
+{% block style %} <link rel="stylesheet" href="{% static "budget/style/budget_list.css" %}"> {% endblock style %}
+
+<body>  
+    {% block content %}
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Your Budgets</h2>
+            <a href="{% url 'set_budget' %}" class="btn btn-primary">+ Add New Budget</a>
+        </div>
+        
+        {% if budgets %}
+        {% for budget in budgets %}
+        <div class="budget-list">
+            <div class="budget-card">
+                <div class="budget-header">
+                    <h4>{{ budget.name }}</h4>
+                    <span class="date-range">{{ budget.start_date }} → {{ budget.end_date }}</span> 
+                </div>
+                    
+                <div class="budget-details">
+                    <p><strong>Amount:</strong> ₹{{ budget.amount }}</p>
+                    <p><strong>Spent:</strong> ₹{{ budget.spent }}</p>
+                    <p><strong>Remaining:</strong> ₹{{ budget.remaining }}</p>
+                </div>
+                    
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: {{ budget.used_percent|floatformat:2 }}%; background-color: {{ budget.color }};"></div>
+                </div>
+                <p class="percent-used">{{ budget.used_percent|floatformat:2 }}% used</p>
+                
+                <div class="budget-actions">
+                    <a href="{% url 'edit_budget' budget.id %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                    <a href="{% url 'add_expense_with_budget' budget.id %}" class="btn btn-sm btn-outline-success">+ Add Expense</a>
+                    <a href="{% url 'delete_budget' budget.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                    <a href="{% url 'view_expense_with_budget' budget.id %}" class="btn btn-sm btn-outline-dark">View</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>No budgets found. Start by adding one!</p>
+        {% endif %}
+    </div>
+{% endblock %}
+</body>

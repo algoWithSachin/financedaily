@@ -1,0 +1,73 @@
+.container {
+  max-width: 900px;
+}
+
+.budget-list {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.budget-card {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+.budget-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.budget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.budget-header h4 {
+  margin: 0;
+  color: #333;
+}
+
+.date-range {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.budget-details {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  color: #444;
+  margin-bottom: 0.75rem;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 10px;
+  background-color: #e9ecef;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 0.3rem;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #4caf50, #81c784);
+}
+
+.percent-used {
+  font-size: 0.85rem;
+  color: #666;
+  text-align: right;
+  margin-bottom: 0.8rem;
+}
+
+.budget-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
