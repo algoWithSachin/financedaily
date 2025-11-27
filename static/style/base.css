@@ -1,4 +1,6 @@
-/* ===== Global Theme Colors ===== */
+/* ===================================
+   GLOBAL THEME COLORS
+=================================== */
 :root {
   --primary-color: #007BFF;
   --primary-hover: #339CFF;
@@ -13,23 +15,27 @@
   --sidebar-hover: #107088;
 }
 
-/* ===== Global Reset ===== */
+/* ===================================
+   GLOBAL RESET
+=================================== */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* ===== Navbar ===== */
+/* ===================================
+   NAVBAR
+=================================== */
 .custom-navbar {
   background-color: var(--navbar-bg);
   color: white;
-  padding: 8px 16px;
-  height: 56px;
   position: fixed;
   top: 0;
   left: 0;
+  height: 56px;
   width: 100%;
+  padding: 8px 16px;
   z-index: 1030;
 }
 
@@ -37,41 +43,29 @@
   color: white !important;
   font-weight: 700;
   font-size: 1.5rem;
-  text-decoration: none;
 }
 
-.custom-navbar .nav-link {
-  color: rgb(224, 220, 220);
-  font-weight: 400;
-  font-size: 0.9rem;
-  margin-left: 10px;
-  transition: color 0.2s ease;
+/* ===================================
+   LAYOUT WRAPPER
+=================================== */
+.main-wrapper {
+  display: flex;
+  width: 100%;
+  margin-top: 56px;            /* Push down under navbar */
+  min-height: calc(100vh - 56px);
 }
 
-.custom-navbar .nav-link:hover {
-  color: #ffffff;
-  font-weight: 500;
-}
-
-.custom-navbar .nav-link.active {
-  color: #ffffff;
-  font-weight: 500;
-  transform: scale(1.1);
-}
-
-/* ===== Sidebar ===== */
+/* ===================================
+   SIDEBAR
+=================================== */
 #sidebar {
+  width: 230px;
+  flex-shrink: 0;
   background-color: var(--sidebar-bg);
   color: white;
-  width: 230px;
-  min-height: 100vh;
-  margin-top: 56px;
-  position: fixed;
-  left: 0;
-  top: 0;
   padding: 15px;
   overflow-y: auto;
-  transition: width 0.3s ease;
+  min-height: calc(100vh - 56px);
 }
 
 #sidebar h5 {
@@ -89,41 +83,43 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
+  transition: 0.2s;
 }
 
 #sidebar .nav-link:hover {
   background: #263437;
-  color: #ffffff;
+  color: white;
 }
 
 #sidebar .nav-link.active {
   background: var(--navbar-bg);
-  color: #ffffff !important;
+  color: white !important;
 }
 
-/* ===== Main Content ===== */
-.flex-grow-1 {
-  margin-left: 230px;
-  margin-top: 56px;
-  padding: 20px;
-  transition: margin-left 0.3s ease;
+/* Sidebar scrollbar */
+#sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+#sidebar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
 }
 
-
-body {
+/* ===================================
+   CONTENT AREA
+=================================== */
+.content-area {
+  flex-grow: 1;
   background-color: #f8fafc;
-  color: var(--text-color);
-  font-family: 'Inter', sans-serif;
+  padding: 20px;
 }
 
-/* ===== Avatar ===== */
+/* ===================================
+   AVATAR + LOGOUT
+=================================== */
 .avatar {
-  background-color: white;
+  background: white;
   color: black;
-  margin-left: 8px;
-  margin-right: 15px;
   border-radius: 50%;
   width: 35px;
   height: 35px;
@@ -133,35 +129,25 @@ body {
   font-weight: 600;
 }
 
-/* ===== Logout Button ===== */
 .logout {
   color: #e7e1e1;
   text-decoration: none;
   font-weight: 400;
   padding: 8px 20px;
-  transition: color 0.2s ease;
+  transition: 0.2s;
 }
 
 .logout:hover {
-  color: #ffffff;
+  color: white;
 }
 
-/* ===== Scrollbar (Sidebar Only) ===== */
-#sidebar::-webkit-scrollbar {
-  width: 6px;
-}
-#sidebar::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 10px;
-}
-
-/* ===== Collapsed Sidebar (optional future toggle) ===== */
+/* ===================================
+   OPTIONAL: Collapsed Sidebar
+=================================== */
 #sidebar.collapsed {
   width: 70px;
 }
+
 #sidebar.collapsed .nav-link span {
   display: none;
-}
-#sidebar.collapsed + .flex-grow-1 {
-  margin-left: 70px;
 }

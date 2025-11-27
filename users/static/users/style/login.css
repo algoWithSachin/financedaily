@@ -1,24 +1,26 @@
-
-
-/* Reset default margins & paddings */
+/* ───────────────────────────────
+   GLOBAL RESET
+──────────────────────────────── */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-.main {
+body {
     font-family: 'Poppins', sans-serif;
     background-color: #ffffff;
+}
+
+/* ───────────────────────────────
+   MAIN LAYOUT
+──────────────────────────────── */
+.main {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    
 }
 
-
-/* Main layout container */
 .main-container {
     display: flex;
     justify-content: center;
@@ -27,28 +29,23 @@
     background-color: #ffffff;
     box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15);
     border-radius: 15px;
-    padding: 40px;
-
-
+    padding: 40px 50px;
+    margin-top: 25px;
 }
 
-/* Logo Section */
+/* ───────────────────────────────
+   LOGO SECTION
+──────────────────────────────── */
 .logo-section img {
-    width: 450px;
-    height: 450px;
+    width: 300px;
+    height: 300px;
     object-fit: contain;
-    margin: 40px;
     margin-right: 50px;
-    
 }
 
-/* .logo-section :hover{
-    transform: scale(1.01);
-    transition: transform 0.5s ease-out;
-} */
-
-
-/* Form Section */
+/* ───────────────────────────────
+   FORM SECTION
+──────────────────────────────── */
 .form-section {
     display: flex;
     flex-direction: column;
@@ -56,13 +53,13 @@
     width: 400px;
 }
 
-/* Login Image Banner */
+/* Banner above form */
 .loginImage {
     position: relative;
     width: 100%;
     height: 150px;
-    border-radius: 10px;
     overflow: hidden;
+    border-radius: 10px;
     margin-bottom: 30px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
@@ -79,23 +76,25 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: white;
+    color: #fff;
     font-size: 28px;
     letter-spacing: 2px;
 }
 
-/* Form Box */
+/* ───────────────────────────────
+   FORM BOX
+──────────────────────────────── */
 .form-box {
     width: 100%;
-    background-color: white;
 }
 
 h2 {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     color: #333;
 }
 
+/* Input fields */
 .input-group {
     display: flex;
     flex-direction: column;
@@ -114,24 +113,28 @@ h2 {
     font-size: 14px;
 }
 
-/* Button */
+/* ───────────────────────────────
+   BUTTON
+──────────────────────────────── */
 .btn {
     width: 100%;
     padding: 12px;
-    background-color:  #005f73;
-    color: white;
+    background-color: #005f73;
+    color: #fff;
     border: none;
     border-radius: 6px;
     font-size: 16px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background 0.3s ease;
 }
 
 .btn:hover {
     background-color: #004e5e;
 }
 
-/* Redirect Link */
+/* ───────────────────────────────
+   REDIRECT TEXT
+──────────────────────────────── */
 .redirect {
     text-align: center;
     margin-top: 15px;
@@ -139,7 +142,7 @@ h2 {
 }
 
 .redirect a {
-    color: #007BFF;
+    color: #007bff;
     text-decoration: none;
 }
 
@@ -147,8 +150,55 @@ h2 {
     text-decoration: underline;
 }
 
-/* 📱 Responsive Design */
+/* ───────────────────────────────
+   MESSAGE STYLING (Django messages)
+──────────────────────────────── */
+.messages {
+    margin-bottom: 20px;
+}
+
+.msg {
+    padding: 12px 14px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    border-left: 5px solid transparent;
+}
+
+/* Success */
+.msg.success {
+    background: #d4edda;
+    color: #155724;
+    border-left-color: #28a745;
+}
+
+/* Error */
+.msg.error {
+    background: #f8d7da;
+    color: #721c24;
+    border-left-color: #dc3545;
+}
+
+/* Warning */
+.msg.warning {
+    background: #fff3cd;
+    color: #856404;
+    border-left-color: #ffc107;
+}
+
+/* Info */
+.msg.info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border-left-color: #17a2b8;
+}
+
+/* ───────────────────────────────
+   RESPONSIVE DESIGN
+──────────────────────────────── */
 @media (max-width: 768px) {
+
     .main-container {
         flex-direction: column;
         text-align: center;
@@ -160,6 +210,7 @@ h2 {
     .logo-section img {
         width: 180px;
         height: 180px;
+        margin-right: 0;
     }
 
     .form-section {

@@ -1,45 +1,88 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %} Login | Expense Tracker {% endblock  %}
-{% block style %}<link rel="stylesheet" href="{% static 'users/style/login.css' %}">{% endblock  %}
+
+{% block title %}Fintrack | Login{% endblock %}
+
+{% block style %}
+<!-- Page-specific stylesheet -->
+<link rel="stylesheet" href="{% static 'users/style/login.css' %}">
+{% endblock %}
 
 
- <body>
+<body>
 {% block content %}
+
 <div class="main">
+
+    <!-- Logo section (top branding) -->
     <div class="logo-section">
-        <img src="{% static 'users/images/fintrack_logo.png'%}" alt="Expense Tracker Logo">
+        <img src="{% static 'users/images/fintrack_logo.png' %}" alt="Expense Tracker Logo">
     </div>
+
     <div class="main-container">
 
         <div class="form-section">
+
+            <!-- Left side: banner image + title -->
             <div class="loginImage">
-                <img src="https://images.unsplash.com/photo-1522198734915-76c764a8454d?ixlib=rb-4.1.0&auto=format&fit=crop&q=80&w=870"
-                alt="login banner">
+                <img 
+                    src="https://images.unsplash.com/photo-1522198734915-76c764a8454d?ixlib=rb-4.1.0&auto=format&fit=crop&q=80&w=870"
+                    alt="Login banner"
+                >
                 <h3>LOGIN</h3>
             </div>
-            
+
+            <!-- Right side: Login form area -->
             <div class="form-box">
+
+                <!-- Django Messages (errors, warnings, etc.) -->
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                            <!-- Add your CSS styles using message.tags as a class -->
+                            <p class="msg {{ message.tags }}">
+                                {{ message }}
+                            </p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <!-- Form header -->
                 <h2>Welcome Back!</h2>
+
+                <!-- Login Form -->
                 <form method="POST">
                     {% csrf_token %}
+
+                    <!-- Username input -->
                     <div class="input-group">
                         <label>Username</label>
                         <input type="text" name="username" placeholder="Enter your username" required>
                     </div>
 
+                    <!-- Password input -->
                     <div class="input-group">
                         <label>Password</label>
                         <input type="password" name="password" placeholder="Enter your password" required>
                     </div>
 
+                    <!-- Submit button -->
                     <button type="submit" class="btn">Login</button>
-                    <p class="redirect">Don’t have an account? <a href="{% url 'signup' %}">Sign up</a></p>
-                </form>
-            </div>
-        </div>
-    </div>
- </div>   
-{% endblock  %}
-</body> 
 
+                    <!-- Redirect to signup -->
+                    <p class="redirect">
+                        Don’t have an account?
+                        <a href="{% url 'signup' %}">Sign up</a>
+                    </p>
+                </form>
+
+            </div><!-- /form-box -->
+
+        </div><!-- /form-section -->
+
+    </div><!-- /main-container -->
+
+</div><!-- /main -->
+
+{% endblock %}
+</body>

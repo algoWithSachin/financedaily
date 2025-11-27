@@ -1,10 +1,12 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 
 
-# Create your views here.
+# ==============================
+# Signup view
+# ==============================
 def signup_view(request):
     if request.method == 'POST':
         firstname = request.POST.get('firstname')
@@ -13,43 +15,53 @@ def signup_view(request):
         password1 = request.POST.get('password1')
         password2 = request.POST.get('password2')
         
-        # Check if passwords match
+        # Password check
         if password1 != password2:
             messages.error(request, "Passwords do not match.")
             return redirect('signup')
 
-        # Check if username already exists
+        # Username check
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already taken. Please choose another one.")
             return redirect('signup')
 
-
-        # If all good — create the user
-        user = User.objects.create_user(first_name=firstname, last_name=lastname, username=username, password=password1)
+        # Create user
+        user = User.objects.create_user(
+            first_name=firstname,
+            last_name=lastname,
+            username=username,
+            password=password1
+        )
         user.save()
-        # messages.success(request, "Account created successfully. Please log in.")
-        # print(username, firstname,lastname, password1, password2) 
+        messages.success(request, "Account created successfully. Please log in.")
         return redirect('login')
-    
     
     return render(request, 'users/signup.html')
 
+
+# ==============================
+# Login view
+# ==============================
 def login_view(request):
+    # Redirect already logged-in users
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        # 1. Check if username exists in the database
+        # Check if username exists
         if not User.objects.filter(username=username).exists():
             messages.error(request, "User not found. Please sign up first.")
             return redirect('login')
 
-        # 2. If user exists, check password
+        # Authenticate credentials
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            login(request, user)
-            # messages.success(request, f"Welcome back, {username}!")
+            login(request, user)  # session will use settings.py defaults
+            messages.success(request, f"Welcome back, {username}!")
             return redirect('dashboard')
         else:
             messages.error(request, "Incorrect password. Try again.")
@@ -58,6 +70,10 @@ def login_view(request):
     return render(request, 'users/login.html')
 
 
+# ==============================
+# Logout view
+# ==============================
 def logout_view(request):
-    logout(request)  # removes the user’s session
-    return redirect('login')  # or wherever you want them to go next
+    logout(request)  # clears session and authentication
+    messages.success(request, "You have been logged out.")
+    return redirect('login')

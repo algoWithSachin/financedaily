@@ -1,17 +1,38 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Dashboard - FinTrack{% endblock %}
+
+{% block title %}FinTrack | Dashboard{% endblock %}
+
 {% block style %}
 <link rel="stylesheet" href="{% static 'dashboard/style/dashboard.css' %}">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
 
-<body>
 {% block content %}
+
+<!-- ==============================
+     Django Messages (success, error, info, warning)
+     Displays any messages passed from views
+================================= -->
+{% if messages %}
+  <div class="messages container mt-2">
+    {% for message in messages %}
+      <p class="msg {{ message.tags }}">{{ message }}</p>
+    {% endfor %}
+  </div>
+{% endif %}
+
+
 <div class="container-fluid p-3">
+
+  <!-- ==============================
+       DASHBOARD HEADER
+  ============================== -->
   <h2 class="mb-4 text-center">Dashboard Overview</h2>
 
-  <!-- Summary Cards -->
+  <!-- ==============================
+       SUMMARY CARDS
+  ============================== -->
   <section class="cards d-flex flex-wrap justify-content-center gap-3 mb-4">
     <div class="card p-3 text-center">
       <h5><b>Average Daily Expense</b></h5>
@@ -31,7 +52,9 @@
     </div>
   </section>
 
-  <!-- Charts -->
+  <!-- ==============================
+       CHARTS
+  ============================== -->
   <div class="row justify-content-center mb-5">
     <div class="col-md-5 mb-3">
       <div class="chart-card p-3">
@@ -47,10 +70,12 @@
     </div>
   </div>
 
-  <!-- Recent Transactions -->
+  <!-- ==============================
+       RECENT TRANSACTIONS
+  ============================== -->
   <section class="Recent-expenses mb-4">
     <h4>Recent Transactions</h4>
-    <p> {{ recent_5_records|length }} transactions in history</p>
+    <p>{{ recent_5_records|length }} transactions in history</p>
     <div class="table-container">
       <table class="table table-striped table-bordered text-center">
         <thead>
@@ -88,9 +113,12 @@
       </table>
     </div>
   </section>
+
 </div>
 
-<!-- Chart JS -->
+<!-- ==============================
+     CHART JS
+================================= -->
 <script>
 const ctx1 = document.getElementById('expenseIncomeChart').getContext('2d');
 new Chart(ctx1, {
@@ -103,11 +131,7 @@ new Chart(ctx1, {
       borderWidth: 0
     }]
   },
-  options: {
-    plugins: {
-      legend: { position: 'bottom' }
-    }
-  }
+  options: { plugins: { legend: { position: 'bottom' } } }
 });
 
 const ctx2 = document.getElementById('categoryChart').getContext('2d');
@@ -121,13 +145,8 @@ new Chart(ctx2, {
       backgroundColor: '#005f73'
     }]
   },
-  options: {
-    plugins: { legend: { display: false } },
-    scales: { y: { beginAtZero: true } }
-  }
+  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
 });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 {% endblock %}
-</body>

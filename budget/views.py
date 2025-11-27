@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import AddBudget
 from record.models import AddRecord
 from dashboard.utlis import filter_records_by_period
 from django.db.models import Sum
 
-# --------------------------
+# ==========================
 # LIST ALL USER BUDGETS
-# --------------------------
+# ==========================
 @login_required
 def budget_list(request):
     user = request.user
@@ -19,7 +20,7 @@ def budget_list(request):
         remaining = b.remaining()
         used_percent = b.used_percent()
 
-        # dynamic color for UI
+        # dynamic color for UI based on usage %
         if used_percent < 50:
             color = "#38b000"  # green
         elif used_percent < 80:
@@ -41,12 +42,9 @@ def budget_list(request):
 
     return render(request, 'budget/budget_list.html', {'budgets': budget_data})
 
-
-
-
-# --------------------------
+# ==========================
 # CREATE NEW BUDGET
-# --------------------------
+# ==========================
 @login_required
 def set_budget(request):
     if request.method == "POST":
@@ -57,13 +55,13 @@ def set_budget(request):
             end_date=request.POST.get('end_date'),
             amount=request.POST.get('amount'),
         )
+        messages.success(request, "Budget created successfully!")
         return redirect('budget_list')
     return render(request, 'budget/set_budget.html')
 
-
-# --------------------------
+# ==========================
 # EDIT EXISTING BUDGET
-# --------------------------
+# ==========================
 @login_required
 def edit_budget(request, budget_id):
     user = request.user
@@ -75,14 +73,14 @@ def edit_budget(request, budget_id):
         budget.end_date = request.POST.get('end_date')
         budget.amount = request.POST.get('amount')
         budget.save()
+        messages.success(request, "Budget updated successfully!")
         return redirect('budget_list')
 
     return render(request, 'budget/edit_budget.html', {'budget': budget})
 
-
-# --------------------------
-# RESET BUDGET (DELETE ITS TRANSACTIONS)
-# --------------------------
+# ==========================
+# DELETE BUDGET (RESET)
+# ==========================
 @login_required
 def delete_budget(request, budget_id):
     user = request.user
@@ -90,10 +88,14 @@ def delete_budget(request, budget_id):
     if request.method == "POST":
         AddRecord.objects.filter(user=user, budget=budget).delete()  # delete all linked records
         budget.delete()
+        messages.success(request, "Budget and its transactions deleted successfully!")
         return redirect('budget_list')
 
     return render(request, 'budget/delete_budget.html', {'budget': budget})
 
+# ==========================
+# ADD EXPENSE TO SPECIFIC BUDGET
+# ==========================
 @login_required
 def add_expense_with_budget(request, budget_id):
     user = request.user
@@ -106,7 +108,7 @@ def add_expense_with_budget(request, budget_id):
         description = request.POST.get('description', '')
         amount = request.POST.get('amount')
 
-        # Add record if record fields are present
+        # Add record if all fields are present
         if date_ and type_ and category and amount:
             AddRecord.objects.create(
                 user=user,
@@ -116,11 +118,17 @@ def add_expense_with_budget(request, budget_id):
                 category=category,
                 description=description,
                 amount=float(amount)
-            )    
+            )
+            messages.success(request, f"Expense added to '{budget.name}' successfully!")
             return redirect('budget_list')
-    
+        else:
+            messages.error(request, "All fields are required to add an expense.")
+
     return render(request, 'budget/add_expense_with_budget.html', {'budget_name': budget.name})
 
+# ==========================
+# VIEW EXPENSES LINKED TO BUDGET
+# ==========================
 @login_required
 def view_expense_with_budget(request, budget_id):
     user = request.user
@@ -130,11 +138,11 @@ def view_expense_with_budget(request, budget_id):
         user=user,
         budget=budget,
         type='Expense',
-        ).order_by('-created_at')
+    ).order_by('-created_at')
     
-    context ={
-        'budget':budget,
-        'expense_list':expense_list,
+    context = {
+        'budget': budget,
+        'expense_list': expense_list,
     }
 
     return render(request, 'budget/view_expense_with_budget.html', context)

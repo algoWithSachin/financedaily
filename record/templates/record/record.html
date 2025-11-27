@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Records - FinTrack{% endblock %}
+{% block title %}Fintrack | Record{% endblock %}
 {% block style %}
 <link rel="stylesheet" href="{% static 'record/style/record.css' %}">
 {% endblock %}
 <body>
 {% block content %}
 <div class="container-fluid px-4 py-3">
-
+  
   <!-- ===== Summary Cards ===== -->
   <section class="row g-3 mb-4">
     <div class="col-md-4">
@@ -71,6 +71,18 @@
 
     <button type="submit" class="btn btn-primary">Filter</button>
   </form>
+
+                <!-- Django Messages (errors, warnings, etc.) -->
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                            <!-- Add your CSS styles using message.tags as a class -->
+                            <p class="msg {{ message.tags }}">
+                                {{ message }}
+                            </p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
 
   <!-- ===== Record Table Section ===== -->
   <section>
