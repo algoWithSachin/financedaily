@@ -4,7 +4,7 @@ import dj_database_url
 
 DEBUG = False
 
-SECRET_KEY = os.environ["SECRET_KEY"]  # MUST be set
+SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]  # MUST be set
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(",")
 
