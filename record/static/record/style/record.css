@@ -1,19 +1,47 @@
 /* ================================
-   RECORD PAGE THEME
-   ================================ */
+   GLOBAL THEME
+================================ */
 :root {
-  --income: #28a745;   /* Green for income/positive balance */
-  --expense: #dc3545;  /* Red for expenses/negative balance */
-  --muted: #888;       /* For secondary/muted text */
+  --income: #28a745;
+  --expense: #dc3545;
+  --muted: #6c757d;
+  --dark: #1e1e1e;
+  --light-bg: #f8f9fa;
+  --primary: #005f73;
+  --primary-hover: #0a9396;
 }
 
-h4, h5, h6 {
-  color: var(--text-dark);
+body {
+  background: var(--light-bg);
+  color: var(--dark);
+  font-family: "Inter", sans-serif;
 }
 
 /* ================================
-   PROGRESS BAR STYLING
-   ================================ */
+   SUMMARY CARDS
+================================ */
+.card-summary {
+  background: white;
+  padding: 18px 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--primary);
+  transition: 0.2s ease;
+}
+
+.card-summary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.summary-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+/* ================================
+   PROGRESS BAR
+================================ */
 .bar-container {
   position: relative;
   width: 100%;
@@ -23,58 +51,106 @@ h4, h5, h6 {
   overflow: hidden;
 }
 
-/* Green = remaining income (balance) */
-.bar-green {
+.bar-income {
   position: absolute;
   left: 0;
   top: 0;
   height: 100%;
-  background-color: var(--income);
-  transition: width 0.4s ease;
+  background-color: #2a9d8f;
+  transition: width 0.35s ease;
   z-index: 1;
 }
 
-/* Red = spent income (expenses) */
-.bar-red {
+.bar-expense {
   position: absolute;
   right: 0;
   top: 0;
   height: 100%;
   background-color: var(--expense);
-  transition: width 0.4s ease;
+  transition: width 0.35s ease;
   z-index: 0;
 }
 
 /* ================================
-   TABLE STYLING
-   ================================ */
-.table-container {
-  max-height: 500px;
-  overflow-y: auto;
+   FILTER BOX
+================================ */
+.filter-box {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: white;
+  padding: 14px 18px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.filter-box select,
+.filter-box input[type="date"] {
+  border-radius: 6px;
+  border: 1px solid #ced4da;
+  padding: 6px 8px;
+  font-size: 14px;
+}
+
+/* ================================
+   BUTTONS
+================================ */
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+.btn-add {
+  font-weight: 700;
+  padding: 6px 14px;
   border-radius: 8px;
 }
 
 /* ================================
-   BUTTON STYLING
-   ================================ */
-.btn-primary {
-  background-color: #005f73;
-  border-color: #005f73;
-  font-weight: 500;
+   TABLE
+================================ */
+.table-container {
+  background: white;
+  border-radius: 12px;
+  padding: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  overflow-y: auto;
+  max-height: 500px;
 }
 
-.btn-primary:hover {
-  background-color: #0a9396;
-  border-color: #0a9396;
+.table thead th {
+  background: #005f73;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 
-.btn-add {
-  font-weight: 600;
+.table td {
+  padding: 12px;
+  vertical-align: middle;
+}
+
+.table tbody tr:hover {
+  background: #f1f8ff !important;
+}
+
+.btn-sm {
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 13px;
 }
 
 /* ================================
-   CUSTOM SCROLLBAR
-   ================================ */
+   SCROLLBAR
+================================ */
 .table-container::-webkit-scrollbar {
   width: 6px;
 }
@@ -88,47 +164,42 @@ h4, h5, h6 {
   background-color: #888;
 }
 
-
-/* ───────────────────────────────
-   MESSAGE STYLING (Django messages)
-──────────────────────────────── */
+/* ================================
+   DJANGO MESSAGES
+================================ */
 .messages {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .msg {
-    padding: 12px 14px;
-    border-radius: 6px;
-    margin-bottom: 10px;
-    font-size: 14px;
-    font-weight: 500;
-    border-left: 5px solid transparent;
+  padding: 12px 14px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  border-left: 5px solid transparent;
 }
 
-/* Success */
 .msg.success {
-    background: #d4edda;
-    color: #155724;
-    border-left-color: #28a745;
+  background: #d4edda;
+  color: #155724;
+  border-left-color: #28a745;
 }
 
-/* Error */
 .msg.error {
-    background: #f8d7da;
-    color: #721c24;
-    border-left-color: #dc3545;
+  background: #f8d7da;
+  color: #721c24;
+  border-left-color: #dc3545;
 }
 
-/* Warning */
 .msg.warning {
-    background: #fff3cd;
-    color: #856404;
-    border-left-color: #ffc107;
+  background: #fff3cd;
+  color: #856404;
+  border-left-color: #ffc107;
 }
 
-/* Info */
 .msg.info {
-    background: #d1ecf1;
-    color: #0c5460;
-    border-left-color: #17a2b8;
+  background: #d1ecf1;
+  color: #0c5460;
+  border-left-color: #17a2b8;
 }
