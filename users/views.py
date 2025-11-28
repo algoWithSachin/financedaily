@@ -43,10 +43,6 @@ def signup_view(request):
 # Login view
 # ==============================
 def login_view(request):
-    # Redirect already logged-in users
-    if request.user.is_authenticated:
-        return redirect('dashboard')
-
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -77,3 +73,11 @@ def logout_view(request):
     logout(request)  # clears session and authentication
     messages.success(request, "You have been logged out.")
     return redirect('login')
+
+
+def landing_view(request):
+    # Redirect already logged-in users
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    
+    return render(request, 'users/landing.html')
