@@ -6,7 +6,7 @@ DEBUG = False
 
 SECRET_KEY = os.environ["SECRET_KEY"]
 
-ALLOWED_HOSTS = [h for h in os.environ["DJANGO_ALLOWED_HOSTS"].split(",") if h]
+ALLOWED_HOSTS = ["financedaily.onrender.com"]
 
 DATABASES = {
     "default": dj_database_url.config(
@@ -34,7 +34,7 @@ SESSION_SAVE_EVERY_REQUEST = False
 # ---------------------------
 # EMAIL CONFIG
 # ---------------------------
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_BACKEND = os.environ["EMAIL_BACKEND"]
 EMAIL_HOST = os.environ["EMAIL_HOST"]
 EMAIL_PORT = int(os.environ["EMAIL_PORT"])
 EMAIL_USE_TLS = os.environ["EMAIL_USE_TLS"].lower() in ("true", "1", "yes")
