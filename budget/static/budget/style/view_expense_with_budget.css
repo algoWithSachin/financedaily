@@ -1,0 +1,134 @@
+/* ==============================
+   PAGE BASE
+================================ */
+body {
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+}
+
+/* ==============================
+   CONTAINER
+================================ */
+.container {
+  max-width: 900px;
+  margin-bottom: 50px;
+}
+
+/* ==============================
+   HEADINGS
+================================ */
+h2.fw-semibold {
+  color: var(--color-text-primary);
+  letter-spacing: 0.2px;
+}
+
+/* ==============================
+   BUDGET SUMMARY
+================================ */
+.container .text-muted {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* ==============================
+   ACTION BUTTONS
+================================ */
+.btn-outline-secondary,
+.btn-success {
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.btn-success {
+  background: var(--color-accent);
+  color: #1f2933;
+  border-color: var(--color-accent);
+}
+
+.btn-success:hover {
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+  color: #1f2933;
+}
+
+/* ==============================
+   EXPENSE TABLE
+================================ */
+.table-responsive {
+  margin-top: 20px;
+}
+
+.table {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+  font-size: 0.9rem;
+}
+
+.table th {
+  background-color: #343a40 !important;
+  color: #fff;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #f8f9fa;
+}
+
+.table td .text-success {
+  font-weight: 600;
+}
+
+.table td .text-danger {
+  font-weight: 600;
+}
+
+/* ==============================
+   ACTION BUTTONS
+================================ */
+.d-flex.justify-content-between {
+  margin-bottom: 20px;
+}
+
+.btn-outline-secondary,
+.btn-success {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.btn-success {
+  background: var(--color-accent);
+  color: #1f2933;
+  border-color: var(--color-accent);
+}
+
+.btn-success:hover {
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+  color: #1f2933;
+}
+
+.btn-outline-secondary {
+  margin-right: 5px;
+}
+
+
+/* ==============================
+   RESPONSIVE
+================================ */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .btn-outline-secondary,
+  .btn-success {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+}

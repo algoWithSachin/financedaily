@@ -1,258 +1,149 @@
-{% comment %} {% load static %}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fintrack – Smart Finance Tracking</title>
-    <link rel="stylesheet" href="{% static 'users/style/landing.css' %}">
-    <link rel="icon" href="{% static "users/images/favicon.png" %}">
-
-</head>
-
-<body>
-
-<!-- NAVBAR -->
-<nav class="landing-navbar">
-    <div class="nav-left">Fintrack</div>
-    <div class="nav-right">
-        <a href="{% url 'login' %}" class="login-btn">Login</a>
-        <a href="{% url 'signup' %}" class="signup-btn">Get Started</a>
-    </div>
-</nav>
-
-<!-- HERO SECTION -->
-<section class="hero">
-    <div class="hero-text">
-        <h1>Manage Your Money Smarter</h1>
-        <p>Track expenses, control budgets, and get visual insights — all in one place.</p>
-        <a href="{% url 'signup' %}" class="cta-btn">Start Free</a>
-    </div>
-    <div class="hero-img">
-        <img src="{% static 'users/images/favicon.png' %}" alt="Finance Illustration">
-    </div>
-</section>
-
-<!-- FEATURES SECTION -->
-<section class="features">
-    <h2>Why Choose Fintrack?</h2>
-
-    <div class="feature-cards">
-        <div class="card">
-            <h3>Smart Dashboard</h3>
-            <p>Get daily insights, balance tracking, and last transactions at a glance.</p>
-        </div>
-
-        <div class="card">
-            <h3>Full Transaction Control</h3>
-            <p>Add, edit, delete, filter, and export your financial data anytime.</p>
-        </div>
-
-        <div class="card">
-            <h3>Budget Management</h3>
-            <p>Create and manage multiple budgets with real-time progress.</p>
-        </div>
-    </div>
-</section>
-
-<!-- HOW IT WORKS -->
-<section class="how-it-works">
-    <h2>How It Works</h2>
-
-    <div class="steps">
-        <div class="step">
-            <span class="step-number">1</span>
-            <h3>Add Your Transactions</h3>
-            <p>Record income and expenses with clean and simple forms.</p>
-        </div>
-
-        <div class="step">
-            <span class="step-number">2</span>
-            <h3>Organize & Track</h3>
-            <p>Categorize your spending and view daily, weekly, or monthly stats.</p>
-        </div>
-
-        <div class="step">
-            <span class="step-number">3</span>
-            <h3>Get Visual Insights</h3>
-            <p>Understand your finances with charts, summaries, and analytics.</p>
-        </div>
-    </div>
-</section>
-
-<!-- SCREENSHOTS SECTION -->
-<section class="screenshots">
-    <h2>Inside the App</h2>
-
-    <div class="screenshot-grid">
-        <div class="shot-card">
-            <img src="{% static 'users/images/shot_dashboard.png' %}" alt="Dashboard Screenshot">
-            <h4>Smart Dashboard</h4>
-            <p>Get a complete summary — balance, averages, and recent activity.</p>
-        </div>
-
-        <div class="shot-card">
-            <img src="{% static 'users/images/shot_records.png' %}" alt="Records Screenshot">
-            <h4>Transaction Records</h4>
-            <p>View, edit, filter, and export your detailed financial history.</p>
-        </div>
-
-        <div class="shot-card">
-            <img src="{% static 'users/images/shot_budget.png' %}" alt="Budget Screenshot">
-            <h4>Budget Manager</h4>
-            <p>Create, manage, and track budgets with real-time progress.</p>
-        </div>
-    </div>
-</section>
-
-
-<!-- FOOTER -->
-<footer class="footer">
-    <p>© 2025 Fintrack • Built with Django</p>
-</footer>
-
-</body>
-</html> {% endcomment %}
-
-
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fintrack – Smart Finance Tracking</title>
+    <title>Finance Daily – Smart Money Tracking</title>
+
+    <link rel="icon" href="{% static 'image/favicon.png' %}">
+    <link rel="stylesheet" href="{% static 'style/variables.css' %}">
     <link rel="stylesheet" href="{% static 'users/style/landing.css' %}">
-    <link rel="icon" href="{% static 'users/images/favicon.png' %}">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 
 <body>
 
+<!-- NAVBAR -->
 <nav class="landing-navbar">
     <div class="nav-left">
-        <i class="ri-wallet-3-fill"></i> Fintrack
+        <img src="{% static 'image/logo.png' %}" alt="Finance Daily logo" class="logo">
+        <span class="brand-text">Finance Daily</span>
     </div>
+
     <div class="nav-right">
         <a href="{% url 'login' %}" class="login-btn">Login</a>
         <a href="{% url 'signup' %}" class="signup-btn">Get Started</a>
     </div>
 </nav>
 
+
+<!-- HERO -->
 <header class="hero">
-    <div class="hero-content">
+    <div class="hero-container">
+
         <div class="hero-text">
-            <span class="badge">New v2.0 Released</span>
-            <h1>Manage Your Money <br> <span class="highlight">Smarter, Not Harder.</span></h1>
-            <p>Track expenses, control budgets, and get visual insights without the spreadsheet headache.</p>
-            
+            <span class="badge">Minimal • Secure • Fast</span>
+
+            <h1>
+                Track Your Money.<br>
+                <span class="highlight">Daily. Clearly.</span>
+            </h1>
+
+            <p>
+                Finance Daily helps you record expenses, understand spending,
+                and build better money habits—without spreadsheets or noise.
+            </p>
+
             <div class="cta-group">
-                <a href="{% url 'signup' %}" class="cta-btn primary">Start for Free</a>
-                <a href="#features" class="cta-btn secondary">Learn More</a>
+                <a href="{% url 'signup' %}" class="cta-btn primary">Start Free</a>
+                <a href="#features" class="cta-btn secondary">How it works</a>
             </div>
-            
+
             <div class="trust-badges">
+                <p><i class="ri-shield-check-fill"></i> Your data stays private</p>
                 <p><i class="ri-checkbox-circle-fill"></i> No credit card required</p>
-                <p><i class="ri-checkbox-circle-fill"></i> Secure data encryption</p>
             </div>
         </div>
-    </div>
 
-    <div class="custom-shape-divider-bottom-1623682060">
-        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
-        </svg>
     </div>
 </header>
 
+
+<!-- FEATURES -->
 <section id="features" class="features">
     <div class="section-header">
-        <h2>Why Choose Fintrack?</h2>
-        <p>Everything you need to take control of your financial life.</p>
+        <h2>Why FinanceDaily?</h2>
+        <p>No fluff. Just the essentials done right.</p>
     </div>
 
-    <div class="feature-cards">
-        <div class="card">
-            <div class="icon-box">
-                <i class="ri-dashboard-3-line"></i>
-            </div>
-            <h3>Smart Dashboard</h3>
-            <p>Get daily insights, balance tracking, and last transactions at a glance with our intuitive UI.</p>
+    <div class="feature-grid">
+
+        <div class="feature-card">
+            <div class="icon-box"><i class="ri-dashboard-3-line"></i></div>
+            <h3>Clear Overview</h3>
+            <p>Instant visibility into income, expenses, and balances.</p>
         </div>
 
-        <div class="card">
-            <div class="icon-box">
-                <i class="ri-exchange-dollar-line"></i>
-            </div>
-            <h3>Full Control</h3>
-            <p>Add, edit, delete, filter, and export your financial data anytime via CSV or PDF.</p>
+        <div class="feature-card">
+            <div class="icon-box"><i class="ri-price-tag-3-line"></i></div>
+            <h3>Smart Categories</h3>
+            <p>Understand where your money actually goes.</p>
         </div>
 
-        <div class="card">
-            <div class="icon-box">
-                <i class="ri-pie-chart-2-line"></i>
-            </div>
-            <h3>Visual Analytics</h3>
-            <p>Understand spending habits with interactive charts and real-time budget progress bars.</p>
+        <div class="feature-card">
+            <div class="icon-box"><i class="ri-bar-chart-2-line"></i></div>
+            <h3>Actionable Insights</h3>
+            <p>See patterns. Make better decisions. Improve monthly.</p>
         </div>
+
     </div>
 </section>
 
+
+<!-- HOW IT WORKS -->
 <section class="how-it-works">
     <div class="section-header">
-        <h2>Simple as 1, 2, 3</h2>
+        <h2>How It Works</h2>
     </div>
 
     <div class="steps-container">
+
         <div class="step-card">
             <div class="step-number">01</div>
-            <h3>Add Transactions</h3>
-            <p>Record income and expenses in seconds with our clean forms.</p>
+            <h3>Add Entries</h3>
+            <p>Log income and expenses in seconds.</p>
         </div>
+
         <div class="step-card">
             <div class="step-number">02</div>
-            <h3>Set Categories</h3>
-            <p>Organize spending into custom categories to see where money goes.</p>
+            <h3>Organize</h3>
+            <p>Group spending with simple categories.</p>
         </div>
+
         <div class="step-card">
             <div class="step-number">03</div>
-            <h3>View Insights</h3>
-            <p>Watch your financial health improve with automatic reports.</p>
+            <h3>Review</h3>
+            <p>Track progress and optimize spending habits.</p>
         </div>
+
     </div>
 </section>
 
-<section class="screenshots">
-    <div class="section-header">
-        <h2>See Fintrack in Action</h2>
-    </div>
 
-    <div class="screenshot-grid">
-        <div class="shot-wrapper">
-            <img src="{% static 'users/images/shot_dashboard.png' %}" alt="Dashboard">
-            <div class="shot-caption">Dashboard</div>
-        </div>
-        <div class="shot-wrapper">
-            <img src="{% static 'users/images/shot_records.png' %}" alt="Records">
-            <div class="shot-caption">Records</div>
-        </div>
-    </div>
+<!-- FINAL CTA -->
+<section class="final-cta">
+    <h2>Start Managing Money the Right Way</h2>
+    <p>Free to start. Takes less than a minute.</p>
+    <a href="{% url 'signup' %}" class="cta-btn primary">Create Free Account</a>
 </section>
 
+
+<!-- FOOTER -->
 <footer class="footer">
     <div class="footer-content">
-        <h3>Fintrack</h3>
-        <p>Your journey to financial freedom starts here.</p>
+        <img src="{% static 'image/logo.png' %}" alt="Fintrack logo" class="footer-logo">
+        <p>Minimal finance tracking for people who value clarity.</p>
+
         <div class="socials">
-            <a href="#"><i class="ri-twitter-fill"></i></a>
             <a href="#"><i class="ri-github-fill"></i></a>
             <a href="#"><i class="ri-linkedin-fill"></i></a>
+            <a href="#"><i class="ri-twitter-fill"></i></a>
         </div>
     </div>
+
     <div class="footer-bottom">
-        <p>© 2025 Fintrack. Built with Django & ❤️</p>
+        <p>© 2025 FinanceDaily. Built with Django.</p>
     </div>
 </footer>
 

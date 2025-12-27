@@ -1,58 +1,79 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Fintrack | Record{% endblock %}
+{% block title %}Records{% endblock %}
+
 {% block style %}
 <link rel="stylesheet" href="{% static 'record/style/record.css' %}">
-
 {% endblock %}
 
 {% block content %}
 <div class="container-fluid px-4 py-3">
+
+  <!-- ==============================
+       Django Messages
+  ============================== -->
+  {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+        <p class="msg {{ message.tags }}">{{ message }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+
+  <!-- PAGE HEADER -->
+  <div class="page-header d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h3 class="mb-1 fw-semibold">Records</h3>
+      <div class="text-muted small">
+        {{ time_period|default:"This Month"|title|cut:"_" }}
+      </div>
+    </div>
+
+    <a href="{% url 'add_record' %}" class="btn btn-primary">
+      + Add Transaction
+    </a>
+  </div>  
 
   <!-- SUMMARY CARDS -->
   <section class="row g-3 mb-4">
     <div class="col-md-4">
       <div class="card-summary">
         <h6 class="text-muted mb-1">Total Balance</h6>
-        <div class="summary-value text-dark">₹{{ total_balance|floatformat:2 }}</div>
+        <div class="summary-value">₹{{ total_balance|floatformat:2 }}</div>
       </div>
     </div>
 
     <div class="col-md-4">
       <div class="card-summary">
-        <h6 class="text-muted mb-1">Income ({{ time_period|default:"this month"|title|cut:"_" }})</h6>
-        <div class="summary-value text-success">+₹{{ total_income|floatformat:2 }}</div>
+        <h6 class="text-muted mb-1">
+          Income ({{ time_period|default:"this month"|title|cut:"_" }})
+        </h6>
+        <div class="summary-value text-success">
+          +₹{{ total_income|floatformat:2 }}
+        </div>
       </div>
     </div>
 
     <div class="col-md-4">
       <div class="card-summary">
-        <h6 class="text-muted mb-1">Expense ({{ time_period|default:"this month"|title|cut:"_" }})</h6>
-        <div class="summary-value text-danger">-₹{{ total_expenses|floatformat:2 }}</div>
+        <h6 class="text-muted mb-1">
+          Expense ({{ time_period|default:"this month"|title|cut:"_" }})
+        </h6>
+        <div class="summary-value text-danger">
+          -₹{{ total_expenses|floatformat:2 }}
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- PROGRESS BAR -->
-  <section class="mb-4">
-    <div class="d-flex justify-content-between mb-1">
-      <span class="fw-semibold" style="color:#2a9d8f;">Income {{ income_percent|floatformat:2 }}%</span>
-      <span class="fw-semibold" style="color:#dc3545;">Expense {{ expense_percent|floatformat:2 }}%</span>
-    </div>
-
-    <div class="bar-container">
-      <div class="bar-income" style="width: {{ income_percent|floatformat:2 }}%"></div>
-      <div class="bar-expense" style="width: {{ expense_percent|floatformat:2 }}%"></div>
-    </div>
-  </section>
-
-  <!-- FILTER SECTION -->
+  <!-- FILTER -->
   <form method="POST" action="{% url 'record_list' %}" class="filter-box mb-4">
     {% csrf_token %}
     <h5 class="m-0">Time Period:</h5>
 
-    <select name="time_period" id="timePeriodSelect" class="form-select" style="width: 200px;">
+    <select name="time_period" id="timePeriodSelect" class="form-select" style="width:200px;">
       <option value="" selected disabled>{{ time_period }}</option>
       <option value="today">Today</option>
       <option value="this_week">This Week</option>
@@ -62,86 +83,204 @@
       <option value="all_records">All Records</option>
     </select>
 
-    <div id="customDateRange" style="display: none;">
+    <div id="customDateRange" style="display:none;">
       <label class="ms-2">From:</label>
-      <input type="date" name="start_date" class="form-control d-inline-block" style="width: 160px;">
+      <input type="date" name="start_date" class="form-control d-inline-block" style="width:160px;">
       <label class="ms-2">To:</label>
-      <input type="date" name="end_date" class="form-control d-inline-block" style="width: 160px;">
+      <input type="date" name="end_date" class="form-control d-inline-block" style="width:160px;">
     </div>
 
     <button type="submit" class="btn btn-primary">Apply</button>
   </form>
 
-  {% if messages %}
-  <div class="messages">
-    {% for message in messages %}
-    <p class="msg {{ message.tags }}">{{ message }}</p>
-    {% endfor %}
-  </div>
-  {% endif %}
+  <!-- RECORDS -->
+  <section class="row g-4">
 
-  <!-- TABLE SECTION -->
-  <section>
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <div>
-        <h4 class="section-title mb-1">Recent Records</h4>
-        <p class="text-muted small mb-0">Total {{ recent_records|length }} records</p>
-      </div>
-      <div class="d-flex gap-2">
-        <a href="{% url 'add_record' %}" class="btn btn-success btn-add">+ Add</a>
-        <a href="{% url 'download_pdf' %}" class="btn btn-danger"><i class="bi bi-file-earmark-pdf"></i> PDF</a>
-      </div>
+ <!-- INCOME -->
+<div class="col-md-6">
+  <div class="card p-3 shadow-sm">
+    <div class="d-flex justify-content-between mb-2">
+      <h5 class="text-success mb-0">Income</h5>
     </div>
 
-    <div class="table-container">
-      <table class="table table-striped table-bordered text-center mb-0">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Date</th>
-            <th>Type</th>
-            <th>Category</th>
-            <th>Description</th>
-            <th>Amount</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for t in recent_records %}
-          <tr>
-            <td>{{ forloop.counter }}</td>
+    <table class="table table-sm mb-0">
+      <thead class="text-muted">
+        <tr>
+          <th>Date</th>
+          <th>Category</th>
+          <th class="text-end">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in income_records %}
+          <!-- MAIN ROW -->
+          <tr class="record-row">
             <td>{{ t.date }}</td>
-            <td>{{ t.type }}</td>
-            <td>{{ t.category }}</td>
-            <td>{{ t.description|default:"-" }}</td>
-            <td>
-              {% if t.type == "Income" %}
-              <span class="text-success fw-semibold">+₹{{ t.amount|floatformat:2 }}</span>
-              {% else %}
-              <span class="text-danger fw-semibold">-₹{{ t.amount|floatformat:2 }}</span>
-              {% endif %}
+            <td class="category-cell">
+              <span class="chevron">▶</span>
+              {{ t.category }}
             </td>
-            <td>
-              <a href="{% url 'edit_record' t.id %}" class="btn btn-outline-primary btn-sm">Edit</a>
-              <a href="{% url 'delete_record' t.id %}" class="btn btn-outline-danger btn-sm">Delete</a>
+            <td class="text-end text-success fw-semibold">
+              +₹{{ t.amount|floatformat:2 }}
             </td>
           </tr>
-          {% empty %}
+
+          <!-- EXPANDED ROW -->
+          <tr class="desc-row">
+            <td colspan="3">
+              <div class="desc-content">
+
+                {% if t.description %}
+                  <p class="mb-2">
+                    <strong>Description:</strong> {{ t.description }}
+                  </p>
+                {% else %}
+                  <p class="text-muted mb-2">No description</p>
+                {% endif %}
+
+                <div class="d-flex gap-2">
+                  <a href="{% url 'edit_record' t.id %}?next={% url 'record_list' %}"
+                     class="btn btn-sm btn-outline-primary">
+                    Edit
+                  </a>
+
+                  <a href="{% url 'delete_record' t.id %}?next={% url 'record_list' %}"
+                     class="btn btn-sm btn-outline-danger">
+                    Delete
+                  </a>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+        {% empty %}
           <tr>
-            <td colspan="7" class="py-4 text-muted">No transactions yet.</td>
+            <td colspan="3" class="text-muted text-center py-3">
+              No income
+            </td>
           </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+ <!-- EXPENSE -->
+<div class="col-md-6">
+  <div class="card p-3 shadow-sm">
+    <div class="d-flex justify-content-between mb-2">
+      <h5 class="text-danger mb-0">Expenses</h5>
     </div>
+
+    <table class="table table-sm mb-0">
+      <thead class="text-muted">
+        <tr>
+          <th>Date</th>
+          <th>Category</th>
+          <th class="text-end">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in expense_records %}
+          <!-- MAIN ROW -->
+          <tr class="record-row">
+            <td>{{ t.date }}</td>
+            <td class="category-cell">
+              <span class="chevron">▶</span>
+              {{ t.category }}
+            </td>
+            <td class="text-end text-danger fw-semibold">
+              -₹{{ t.amount|floatformat:2 }}
+            </td>
+          </tr>
+
+          <!-- EXPANDED ROW -->
+          <tr class="desc-row">
+            <td colspan="3">
+              <div class="desc-content">
+
+                {% if t.description %}
+                  <p class="mb-2">
+                    <strong>Description:</strong> {{ t.description }}
+                  </p>
+                {% else %}
+                  <p class="text-muted mb-2">No description</p>
+                {% endif %}
+
+                <div class="d-flex gap-2">
+                  <a href="{% url 'edit_record' t.id %}?next={% url 'record_list' %}"
+                     class="btn btn-sm btn-outline-primary">
+                    Edit
+                  </a>
+
+                  <a href="{% url 'delete_record' t.id %}?next={% url 'record_list' %}"
+                     class="btn btn-sm btn-outline-danger">
+                    Delete
+                  </a>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="3" class="text-muted text-center py-3">
+              No expenses
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
   </section>
 </div>
 
 <script>
+  // Toggle custom date range in filter
   const select = document.getElementById('timePeriodSelect');
   const customRange = document.getElementById('customDateRange');
+
   select.addEventListener('change', () => {
     customRange.style.display = select.value === 'custom' ? 'block' : 'none';
   });
+
+  // Expand/collapse transaction rows
+  document.querySelectorAll('.record-row').forEach(row => {
+    row.addEventListener('click', () => {
+      row.classList.toggle('open'); // expand/collapse
+
+      // Optional: rotate chevron
+      const chevron = row.querySelector('.chevron');
+      if (chevron) chevron.style.transform = row.classList.contains('open') ? 'rotate(90deg)' : 'rotate(0deg)';
+    });
+  });
+
+
+    // Get all alert close buttons
+  document.querySelectorAll('.messages-container .btn-close').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const alert = this.parentElement;
+      alert.style.transition = "opacity 0.3s ease";
+      alert.style.opacity = "0";
+
+      // Remove element after fade out
+      setTimeout(() => {
+        alert.remove();
+      }, 300);
+    });
+  });
+
+  // Optional: auto-hide messages after 5 seconds
+  document.querySelectorAll('.messages-container .alert').forEach(alert => {
+    setTimeout(() => {
+      alert.style.transition = "opacity 0.5s ease";
+      alert.style.opacity = "0";
+      setTimeout(() => alert.remove(), 500);
+    }, 5000); // 5000ms = 5 seconds
+  });
 </script>
+
 {% endblock %}

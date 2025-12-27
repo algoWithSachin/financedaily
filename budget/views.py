@@ -5,6 +5,7 @@ from .models import AddBudget
 from record.models import AddRecord
 from dashboard.utlis import filter_records_by_period
 from django.db.models import Sum
+from .utlis import *
 
 # ==========================
 # LIST ALL USER BUDGETS
@@ -12,23 +13,40 @@ from django.db.models import Sum
 @login_required
 def budget_list(request):
     user = request.user
+
+    # Fetch user budgets
     budgets = AddBudget.objects.filter(user=user)
 
-    budget_data = []
+    active_budgets = []
+
     for b in budgets:
+        # Auto-update expired budgets (moves them to completed)
+        b.auto_update_status()
+
+        # Only alert if it's still active
+        if b.status == "active":
+            budget_alerts(request, b)
+
+        # Skip completed ones — they belong to the completed page
+        if b.status == "completed":
+            continue
+
+        # Calculate values
         spent = b.spent_amount()
         remaining = b.remaining()
         used_percent = b.used_percent()
 
-        # dynamic color for UI based on usage %
-        if used_percent < 50:
-            color = "#38b000"  # green
-        elif used_percent < 80:
-            color = "#ffb703"  # orange
-        else:
-            color = "#e63946"  # red
 
-        budget_data.append({
+        # Color logic
+        if used_percent < 50:
+            color = "#38b000"
+        elif used_percent < 80:
+            color = "#ffb703"
+        else:
+            color = "#e63946"
+
+        # Add to active budget list
+        active_budgets.append({
             'id': b.id,
             'name': b.name,
             'amount': float(b.amount),
@@ -40,24 +58,55 @@ def budget_list(request):
             'color': color,
         })
 
-    return render(request, 'budget/budget_list.html', {'budgets': budget_data})
+    return render(request, 'budget/budget_list.html', {'budgets': active_budgets})
+
 
 # ==========================
 # CREATE NEW BUDGET
 # ==========================
+
 @login_required
 def set_budget(request):
     if request.method == "POST":
+        name = request.POST.get('name', 'Budget')
+        start_date_str = request.POST.get('start_date')
+        end_date_str = request.POST.get('end_date')
+        amount_str = request.POST.get('amount')
+
+        # Convert strings to proper types
+        try:
+            start_date = date.fromisoformat(start_date_str)
+            end_date = date.fromisoformat(end_date_str)
+        except ValueError:
+            messages.error(request, "Invalid date format. Use YYYY-MM-DD.")
+            return redirect('set_budget')
+
+        try:
+            amount = float(amount_str)
+        except ValueError:
+            messages.error(request, "Amount must be a number.")
+            return redirect('set_budget')
+
+        # Validate dates and amount
+        if not validate_budget_dates(request, start_date, end_date, name):
+            return redirect('set_budget')
+
+        if not validate_budget_amount(request, amount, name):
+            return redirect('set_budget')
+
+        # Everything valid → create budget
         AddBudget.objects.create(
             user=request.user,
-            name=request.POST.get('name'),
-            start_date=request.POST.get('start_date'),
-            end_date=request.POST.get('end_date'),
-            amount=request.POST.get('amount'),
+            name=name,
+            start_date=start_date,
+            end_date=end_date,
+            amount=amount,
         )
-        messages.success(request, "Budget created successfully!")
+        messages.success(request, f"Budget '{name}' created successfully!")
         return redirect('budget_list')
+
     return render(request, 'budget/set_budget.html')
+
 
 # ==========================
 # EDIT EXISTING BUDGET
@@ -103,12 +152,11 @@ def add_expense_with_budget(request, budget_id):
 
     if request.method == 'POST':
         date_ = request.POST.get('date')
-        type_ = request.POST.get('type')
+        type_ = request.POST.get('type', 'Expense')
         category = request.POST.get('category')
         description = request.POST.get('description', '')
         amount = request.POST.get('amount')
 
-        # Add record if all fields are present
         if date_ and type_ and category and amount:
             AddRecord.objects.create(
                 user=user,
@@ -124,7 +172,8 @@ def add_expense_with_budget(request, budget_id):
         else:
             messages.error(request, "All fields are required to add an expense.")
 
-    return render(request, 'budget/add_expense_with_budget.html', {'budget_name': budget.name})
+    # Pass the whole budget object to the template
+    return render(request, 'budget/add_expense_with_budget.html', {'budget': budget, 'budget_name': budget.name})
 
 # ==========================
 # VIEW EXPENSES LINKED TO BUDGET
@@ -146,3 +195,114 @@ def view_expense_with_budget(request, budget_id):
     }
 
     return render(request, 'budget/view_expense_with_budget.html', context)
+
+@login_required
+def view_completed_budget_expenses(request, budget_id):
+    user = request.user
+    budget = get_object_or_404(AddBudget, id=budget_id, user=user)
+
+    if budget.status != 'completed':
+        messages.error(request, "Budget is not completed.")
+        return redirect('budget_list')
+
+    expense_list = AddRecord.objects.filter(user=user, budget=budget)
+
+    return render(request, 'budget/view_completed_budget_expenses.html', {
+        'budget': budget,
+        'expense_list': expense_list,
+    })
+
+# ==========================
+# BUDGET COMPLETED
+# ==========================
+@login_required
+def budget_completed_view(request):
+    user = request.user
+
+    budgets = AddBudget.objects.filter(user=user)
+    completed_list = []
+
+    for b in budgets:
+
+        # Auto-update expired budgets -> sets status='completed'
+        b.auto_update_status()
+
+        # Only include budgets that are actually completed
+        if b.status != "completed":
+            continue
+  
+        spent = b.spent_amount()
+        remaining = b.remaining()
+        used_percent = b.used_percent()
+
+        # Determine status badge
+        if used_percent < 100:
+            badge = "under"
+        elif used_percent == 100:
+            badge = "normal"
+        else:
+            badge = "over"
+
+        # Format completed list data
+        completed_list.append({
+            'id': b.id,
+            'name': b.name,
+            'amount': float(b.amount),
+            'spent': spent,
+            'remaining': remaining,
+            'used_percent': round(used_percent, 2),
+            'start_date': b.start_date,
+            'end_date': b.end_date,
+            'completion_status': badge,  # under | normal | over
+        })
+
+    return render(request, "budget/budget_completed.html", {
+        "budget_completed": completed_list,
+    })
+
+
+# ==========================
+# BUDGET ALERTS
+# ==========================
+def budget_alerts(request, budget):
+    """
+    Handles all alert logic for a single budget.
+    Easy to extend — just add more conditions.
+    """
+
+    spent = budget.spent_amount()
+    used_percent = budget.used_percent()
+
+    # 1. Expired but still active
+    if budget.is_expired() and budget.status == "active":
+        messages.warning(
+            request,
+            f"Your budget '{budget.name}' expired on {budget.end_date}. "
+            "You can still add expenses, but it is no longer active."
+        )
+
+    # 2. Overspent
+    if used_percent > 100:
+        messages.error(
+            request,
+            f"You have overspent the budget '{budget.name}'. "
+            f"Current usage: {used_percent:.2f}%."
+        )
+
+    # 3. Near limit (90–100)
+    elif used_percent >= 90:
+        messages.warning(
+            request,
+            f"Your budget '{budget.name}' is close to the limit "
+            f"({used_percent:.2f}% used)."
+        )
+
+    # Future examples:
+    # if budget.remaining() < 100:
+    #     messages.info(request, "Only ₹100 left in your budget.")
+
+    return  # nothing to return — messages auto-save
+
+
+
+

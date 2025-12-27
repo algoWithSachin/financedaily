@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Completed Budgets{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'budget/style/budget_completed.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <!-- ==============================
+       Django Messages
+  ============================== -->
+  {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+        <p class="msg {{ message.tags }}">{{ message }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+    <div class="page-header">
+        <h2>Completed Budgets</h2>
+        <a href="{% url 'budget_list' %}" class="btn btn-outline-dark">← Back to Active</a>
+    </div>
+
+    {% if budget_completed %}
+        {% for b in budget_completed %}
+        <div class="budget-card completed-card">
+            <div class="header-row">
+                <h4>{{ b.name }}</h4>
+                <span class="date">{{ b.start_date }} → {{ b.end_date }}</span>
+            </div>
+
+            <div class="status-badge 
+                {% if b.used_percent < 100 %} under 
+                {% elif b.used_percent == 100 %} normal 
+                {% else %} over {% endif %}">
+                {% if b.used_percent < 100 %}
+                    ✔ Under Budget
+                {% elif b.used_percent == 100 %}
+                    • On Budget
+                {% else %}
+                    ⚠ Overspent
+                {% endif %}
+            </div>
+
+            <div class="details">
+                <p><strong>Budgeted:</strong> ₹{{ b.amount }}</p>
+                <p><strong>Spent:</strong> ₹{{ b.spent }}</p>
+                <p><strong>Used:</strong> {{ b.used_percent }}%</p>
+            </div>
+
+            <div class="actions">
+                <a href="{% url 'view_completed_budget_expenses' b.id %}" class="btn btn-sm btn-outline-dark">View Details</a>
+                <a href="{% url 'delete_budget' b.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="empty-text">No completed budgets yet.</p>
+    {% endif %}
+
+</div>
+{% endblock %}

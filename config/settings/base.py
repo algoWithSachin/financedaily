@@ -1,6 +1,4 @@
 from pathlib import Path
-import os
-import dj_database_url
 
 # ---------------------------
 # PATHS
@@ -8,19 +6,9 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # ---------------------------
-# SECRET KEY
-# ---------------------------
-SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
-
-# ---------------------------
-# DEBUG (default False here)
-# ---------------------------
-DEBUG = False
-
-# ---------------------------
 # ALLOWED HOSTS
 # ---------------------------
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
+ALLOWED_HOSTS = []
 
 # ---------------------------
 # APPS
@@ -85,12 +73,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # ---------------------------
 # DATABASE (default sqlite)
 # ---------------------------
-DATABASES = {
-    'default': dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-        conn_max_age=0,
-    )
-}
+DATABASES = {}
 
 # ---------------------------
 # PASSWORDS
@@ -114,7 +97,7 @@ USE_TZ = True
 # STATIC FILES
 # ---------------------------
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATICFILES_DIRS = []
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -122,5 +105,9 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # SECURITY HEADERS
 # ---------------------------
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+X_FRAME_OPTIONS = "DENY"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+

@@ -37,6 +37,8 @@ def record_view(request):
 
     context = {
         'recent_records': filtered_records,
+        "income_records": record_list.filter(type="Income"),
+        "expense_records": record_list.filter(type="Expense"),
         'total_balance': total_balance,
         'total_income': total_income,
         'total_expenses': total_expenses,
@@ -59,6 +61,7 @@ def add_record(request):
         category = request.POST.get('category')
         description = request.POST.get('description', '')
         amount = request.POST.get('amount')
+
 
         if date_ and type_ and category and amount:
             AddRecord.objects.create(
@@ -92,7 +95,9 @@ def edit_record(request, record_id):
         record.amount = request.POST.get('amount')
         record.save()
         messages.success(request, "Record updated successfully!")
-        return redirect('record_list')
+
+        next_url = request.POST.get('next')
+        return redirect(next_url or 'record_list')
 
     return render(request, 'record/edit_record.html', {'record': record})
 
@@ -107,7 +112,10 @@ def delete_record(request, record_id):
     if request.method == 'POST':
         record.delete()
         messages.success(request, "Record deleted successfully!")
-        return redirect('record_list')
+
+        next_url = request.POST.get('next')
+
+        return redirect(next_url or 'record_list')
 
     return render(request, 'record/delete_record.html', {'record': record})
 

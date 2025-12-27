@@ -2,8 +2,9 @@
    PAGE BASE
 ================================ */
 body {
-  background: var(--color-bg);
-  color: var(--color-text-primary);
+  background: var(--color-bg-light);
+  color: var(--color-text-body);
+  font-family: "Segoe UI", sans-serif;
 }
 
 /* ==============================
@@ -17,8 +18,9 @@ body {
    HEADING
 ================================ */
 h2 {
-  color: var(--color-text-primary);
+  color: var(--color-text-dark);
   letter-spacing: 0.2px;
+  font-weight: 600;
 }
 
 /* ==============================
@@ -26,8 +28,10 @@ h2 {
 ================================ */
 form {
   background: var(--color-surface);
+  padding: 1.5rem;
   border-radius: 12px;
   border: 1px solid var(--color-border);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
 
 /* ==============================
@@ -36,6 +40,7 @@ form {
 .form-label {
   font-size: 0.85rem;
   color: var(--color-text-secondary);
+  font-weight: 500;
 }
 
 /* ==============================
@@ -46,6 +51,7 @@ form {
   border-radius: 8px;
   border: 1px solid var(--color-border);
   font-size: 0.95rem;
+  padding: 0.5rem 0.75rem;
 }
 
 .form-control:focus,
@@ -68,6 +74,7 @@ form {
   font-weight: 500;
   color: var(--color-primary);
   text-decoration: none;
+  cursor: pointer;
 }
 
 #toggleNote:hover {
@@ -83,17 +90,17 @@ form {
 }
 
 /* ==============================
-   ACTION BUTTONS
+   BUTTONS
 ================================ */
-.btn-primary {
-  background: var(--color-accent);
+.btn-warning {
+  background-color: var(--color-accent);
   border-color: var(--color-accent);
   color: #1f2933;
   font-weight: 600;
 }
 
-.btn-primary:hover {
-  background: var(--color-accent-hover);
+.btn-warning:hover {
+  background-color: var(--color-accent-hover);
   border-color: var(--color-accent-hover);
 }
 
@@ -118,5 +125,9 @@ form {
 
   form {
     padding: 1.25rem !important;
+  }
+
+  #amount {
+    font-size: 1rem;
   }
 }

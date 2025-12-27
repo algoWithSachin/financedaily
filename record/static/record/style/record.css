@@ -1,20 +1,57 @@
-/* ================================
-   GLOBAL THEME
-================================ */
 :root {
-  --income: #28a745;
-  --expense: #dc3545;
-  --muted: #6c757d;
-  --dark: #1e1e1e;
-  --light-bg: #f8f9fa;
-  --primary: #005f73;
-  --primary-hover: #0a9396;
+  /* ========== BRAND ========== */
+  --color-primary: #005f73;        /* Trust / navigation */
+  --color-primary-dark: #003d4c;
+  --color-primary-light: #94d2bd;
+
+  /* ========== ACCENT (CTA) ========== */
+  --color-accent: #e9c46a;         /* Add / Apply actions */
+  --color-accent-hover: #ddb84f;
+
+  /* ========== STATUS ========== */
+  --color-success: #2a9d8f;
+  --color-danger: #e63946;
+  --color-warning: #f4a261;
+
+  /* ========== BACKGROUND & SURFACE ========== */
+  --color-bg: #f8f9fa;
+  --color-surface: #ffffff;
+  --color-border: #e5e7eb;
+
+  /* ========== TEXT ========== */
+  --color-text-primary: #1f2933;
+  --color-text-secondary: #6b7280;
+  --color-text-muted: #9ca3af;
 }
 
+
+/* ==============================
+   BASE
+================================ */
 body {
-  background: var(--light-bg);
-  color: var(--dark);
-  font-family: "Inter", sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+}
+
+/* ==============================
+   PAGE HEADER
+================================ */
+.page-header h3 {
+  color: var(--color-text-primary);
+}
+
+.page-header .text-muted {
+  color: var(--color-text-secondary);
+}
+
+.page-header .btn-primary {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #1f2933;
+}
+
+.page-header .btn-primary:hover {
+  background: var(--color-accent-hover);
 }
 
 /* ================================
@@ -23,9 +60,10 @@ body {
 .card-summary {
   background: white;
   padding: 18px 20px;
+  margin-top: 4px;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  border-left: 5px solid var(--primary);
+  border-left: 5px solid var(--color-primary);
   transition: 0.2s ease;
 }
 
@@ -78,9 +116,9 @@ body {
   display: flex;
   align-items: center;
   gap: 14px;
-  background: white;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   padding: 14px 18px;
-  border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
 
@@ -92,114 +130,260 @@ body {
   font-size: 14px;
 }
 
-/* ================================
-   BUTTONS
+
+/* ==============================
+   RECORD SECTIONS
 ================================ */
-.btn-primary {
-  background-color: var(--primary);
-  border-color: var(--primary);
-  font-weight: 600;
+.text-success {
+  color: var(--color-success) !important;
 }
 
-.btn-primary:hover {
-  background-color: var(--primary-hover);
-  border-color: var(--primary-hover);
+.text-danger {
+  color: var(--color-danger) !important;
 }
 
-.btn-add {
-  font-weight: 700;
-  padding: 6px 14px;
-  border-radius: 8px;
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
 }
 
-/* ================================
-   TABLE
+/* Section titles */
+h5.text-success {
+  color: var(--color-success) !important;
+}
+
+h5.text-danger {
+  color: var(--color-danger) !important;
+}
+
+
+/* ==============================
+   TABLE STYLES
 ================================ */
-.table-container {
-  background: white;
-  border-radius: 12px;
-  padding: 0;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  overflow-y: auto;
-  max-height: 500px;
+.table {
+    font-size: 0.9rem;
 }
 
 .table thead th {
-  background: #005f73;
-  color: white;
-  font-weight: 700;
-  font-size: 14px;
-  padding-top: 12px;
-  padding-bottom: 12px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    border-bottom: 1px solid #e6e6e6;
 }
 
-.table td {
-  padding: 12px;
-  vertical-align: middle;
+.table tbody tr {
+    cursor: default;
 }
 
 .table tbody tr:hover {
-  background: #f1f8ff !important;
+    background: #f3f4f6;
 }
 
-.btn-sm {
-  padding: 3px 10px;
-  border-radius: 6px;
-  font-size: 13px;
+/* Amount alignment */
+.table td.text-end {
+    font-weight: 600;
 }
 
-/* ================================
-   SCROLLBAR
+
+/* ==============================
+   EXPANDABLE DESCRIPTION ROW
 ================================ */
-.table-container::-webkit-scrollbar {
-  width: 6px;
+
+.record-row {
+    cursor: pointer;
 }
 
-.table-container::-webkit-scrollbar-thumb {
-  background-color: #ccc;
-  border-radius: 4px;
+.record-row.has-desc:hover {
+    background: #f1f3f5;
 }
 
-.table-container::-webkit-scrollbar-thumb:hover {
-  background-color: #888;
+/* Chevron icon */
+.chevron {
+    font-size: 0.75rem;
+    margin-right: 6px;
+    display: inline-block;
+    transition: transform 0.2s ease;
+    color: var(--text-muted);
 }
 
-/* ================================
+/* Description row hidden by default */
+.desc-row {
+    display: none;
+    background: #fafafa;
+}
+
+.desc-content {
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    color: var(--text-body);
+    border-left: 3px solid var(--color-primary-light);
+}
+.desc-header{
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    color: var(--text-body);
+    /* border-left: 3px solid var(--primary-color); */
+}
+
+/* Active (expanded) state */
+.record-row.open .chevron {
+    transform: rotate(90deg);
+}
+
+.record-row.open + .desc-row {
+    display: table-row;
+}
+
+
+/* ==============================
+   ADD BUTTONS
+================================ */
+.btn-outline-success {
+  border-color: var(--color-success);
+  color: var(--color-success);
+}
+
+.btn-outline-success:hover {
+  background: var(--color-success);
+  color: #fff;
+}
+
+.btn-outline-danger {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+.btn-outline-danger:hover {
+  background: var(--color-danger);
+  color: #fff;
+}
+
+.btn-primary {
+  background: var(--color-accent);
+  border : 0px;
+  color: #1f2933;
+}
+
+.btn-primary:hover {
+  background: var(--color-accent-hover);
+}
+
+
+/* ==============================
    DJANGO MESSAGES
 ================================ */
 .messages {
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 }
 
 .msg {
-  padding: 12px 14px;
-  border-radius: 6px;
-  margin-bottom: 10px;
-  font-size: 14px;
-  font-weight: 500;
-  border-left: 5px solid transparent;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
 }
 
 .msg.success {
-  background: #d4edda;
-  color: #155724;
-  border-left-color: #28a745;
+  border-left: 4px solid var(--color-success);
 }
 
-.msg.error {
-  background: #f8d7da;
-  color: #721c24;
-  border-left-color: #dc3545;
+.msg.error,
+.msg.danger {
+  border-left: 4px solid var(--color-danger);
 }
 
 .msg.warning {
-  background: #fff3cd;
-  color: #856404;
-  border-left-color: #ffc107;
+  border-left: 4px solid var(--color-warning);
 }
 
 .msg.info {
-  background: #d1ecf1;
-  color: #0c5460;
-  border-left-color: #17a2b8;
+  border-left: 4px solid var(--color-primary);
+}
+
+/* ==============================
+   MOBILE OPTIMIZATION – RECORDS
+================================ */
+@media (max-width: 768px) {
+
+  /* Page padding */
+  .container-fluid {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  /* Header */
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .page-header h3 {
+    font-size: 1.25rem;
+  }
+
+  .page-header .btn {
+    width: 100%;
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  /* Summary cards */
+  .card-summary {
+    padding: 14px;
+  }
+
+  .summary-value {
+    font-size: 1.2rem;
+  }
+
+  /* Filter box */
+  .filter-box {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .filter-box select,
+  .filter-box input,
+  .filter-box button {
+    width: 100% !important;
+  }
+
+  #customDateRange {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  /* Tables */
+  .table {
+    font-size: 0.8rem;
+  }
+
+  .table thead th {
+    font-size: 0.75rem;
+  }
+
+  .table td {
+    padding: 6px 8px;
+  }
+
+  /* Category cell */
+  .category-cell {
+    white-space: nowrap;
+  }
+
+  /* Description row */
+  .desc-content {
+    font-size: 0.8rem;
+    padding: 8px 10px;
+  }
+
+  .desc-content .btn {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
 }

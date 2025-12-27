@@ -1,152 +1,385 @@
-/* ===================================
-   GLOBAL THEME COLORS
-=================================== */
-:root {
-  --primary-color: #007BFF;
-  --primary-hover: #339CFF;
-  --success-color: #28A745;
-  --danger-color: #DC3545;
-  --background-color: #F5F7FA;
-  --text-color: #333333;
-  --card-color: #FFFFFF; 
-  --navbar-bg: #005f73;
-  --sidebar-bg: #0a3d47;
-  --sidebar-hover: #107088;
-}
 
-/* ===================================
-   GLOBAL RESET
-=================================== */
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+    box-sizing: border-box;
 }
 
-/* ===================================
-   NAVBAR
-=================================== */
-.custom-navbar {
-  background-color: var(--navbar-bg);
-  color: white;
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 56px;
-  width: 100%;
-  padding: 8px 16px;
-  z-index: 1030;
+body {
+    margin: 0;
+    font-family: var(--font-family-base);
+    background-color: var(--color-background);
+    color: var(--color-text-dark);
 }
 
-.navbar-brand {
-  color: white !important;
-  font-weight: 700;
-  font-size: 1.5rem;
-}
-
-/* ===================================
-   LAYOUT WRAPPER
-=================================== */
-.main-wrapper {
-  display: flex;
-  width: 100%;
-  margin-top: 56px;            /* Push down under navbar */
-  min-height: calc(100vh - 56px);
-}
-
-/* ===================================
-   SIDEBAR
-=================================== */
-#sidebar {
-  width: 230px;
-  flex-shrink: 0;
-  background-color: var(--sidebar-bg);
-  color: white;
-  padding: 15px;
-  overflow-y: auto;
-  min-height: calc(100vh - 56px);
-}
-
-#sidebar h5 {
-  color: #e0e0e0;
-  font-size: 1rem;
-  margin-bottom: 15px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-#sidebar .nav-link {
-  color: #d0d0d0;
-  padding: 10px 15px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: 0.2s;
-}
-
-#sidebar .nav-link:hover {
-  background: #263437;
-  color: white;
-}
-
-#sidebar .nav-link.active {
-  background: var(--navbar-bg);
-  color: white !important;
-}
-
-/* Sidebar scrollbar */
-#sidebar::-webkit-scrollbar {
-  width: 6px;
-}
-#sidebar::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 10px;
-}
-
-/* ===================================
-   CONTENT AREA
-=================================== */
-.content-area {
-  flex-grow: 1;
-  background-color: #f8fafc;
-  padding: 20px;
-}
-
-/* ===================================
-   AVATAR + LOGOUT
-=================================== */
-.avatar {
-  background: white;
-  color: black;
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-}
-
-.logout {
-  color: #e7e1e1;
-  text-decoration: none;
-  font-weight: 400;
-  padding: 8px 20px;
-  transition: 0.2s;
-}
-
-.logout:hover {
-  color: white;
-}
-
-/* ===================================
-   OPTIONAL: Collapsed Sidebar
-=================================== */
-#sidebar.collapsed {
-  width: 70px;
-}
-
-#sidebar.collapsed .nav-link span {
+/* ===============================
+   MOBILE NAVBAR (DESKTOP HIDDEN)
+================================ */
+.mobile-navbar {
   display: none;
+}
+
+/* ===============================
+   APP LAYOUT
+================================ */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ===============================
+   SIDEBAR (LIGHT)
+================================ */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    background-color: var(--color-surface);
+    border-right: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    transition: width 0.25s ease;
+    z-index: 1000;
+}
+
+/* Collapsed */
+.sidebar.collapsed {
+    width: 80px;
+    cursor: ew-resize;
+}
+
+.sidebar.collapsed .sidebar-user {
+    cursor: default; /* normal cursor for actual content */
+}
+/* ===============================
+   SIDEBAR HEADER
+================================ */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    margin-left: 8px;
+    margin-right: 8px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    padding: 10px 10px;
+    gap: 20px;
+}
+
+.sidebar-brand img {
+    height: 24px;
+    width: auto;
+}
+
+.sidebar-brand .brand-text {
+    font-weight: 500;
+    color: var(--color-primary-dark);
+    white-space: nowrap;
+    margin-top: auto;
+}
+
+.sidebar.collapsed .brand-text {
+    display: none;
+}
+
+.sidebar-toggle {
+    background: none;
+    border: none;
+    padding: 8px 12px;
+    margin-left: var(--spacing-sm);
+    margin-right: var(--spacing-sm); 
+    color: var(--color-text-medium);
+    font-size: 1.2rem;
+}
+.sidebar-toggle i {
+    color: var(--color-primary-dark);
+}
+
+/* Collapse user section */
+.sidebar.collapsed .username,
+.sidebar.collapsed .logout-text,
+.sidebar.collapsed .logout-btn,
+.sidebar.collapsed .sidebar-toggle {
+    display: none;
+}
+
+.sidebar.collapsed .user-info{
+    justify-content: center;
+}
+.sidebar.collapsed .sidebar-header:hover .sidebar-brand {
+    display: none;
+}
+
+.sidebar.collapsed .sidebar-header:hover .sidebar-toggle {
+    display: inline;
+    font-size: 1.2rem;
+    padding: 8px 12px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: var(--border-radius-md);
+}
+
+.sidebar-toggle:hover {
+    border-radius: 20%;
+    background-color: var(--color-border);  
+    cursor: ew-resize;
+}
+
+
+
+/* ===============================
+   NAVIGATION
+================================ */
+.sidebar-nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-sm);
+    gap: 5px;
+    margin-left: 8px;
+    margin-right: 8px;
+
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    gap: var(--spacing-lg);
+    padding: 10px 10px;
+    border-radius: var(--border-radius-md);
+    color: var(--color-text-medium);
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-item i {
+    font-size: 1.2rem;
+    min-width: 24px;
+    text-align: center;
+    color: var(--color-text-light);
+}
+
+/* Hover */
+.nav-item:hover {
+    background-color: rgba(0, 71, 171, 0.1); /* primary tint */
+    color: var(--color-text-dark);
+}
+
+/* Active */
+.nav-item.active {
+    background-color: var(--color-primary);
+    color: white;
+    font-weight: 500;
+}
+
+.nav-item.active i {
+    color: white;
+}
+
+/* Collapse behavior */
+.sidebar.collapsed .nav-text {
+    display: none;
+}
+
+.sidebar.collapsed .nav-item {
+    justify-content: center;
+}
+
+
+/* Mobile close button */
+.mobile-close-btn {
+    display: none; /* hide by default */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--color-text-dark);
+}
+/* ===============================
+   USER SECTION
+================================ */
+.sidebar-user {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--color-border);
+    background-color: #eeeaea;
+    padding: 10px;
+    margin: var(--spacing-sm);
+    margin-top: auto;
+}
+
+.user-info {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-left: var(--spacing-sm);
+    margin-right: var(--spacing-sm);
+}
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+.user-username {
+    margin-top: auto;
+    margin-bottom: auto;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.username {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+
+.logout-btn {
+    margin-left: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    gap: var(--spacing-sm);
+    color: var(--color-text-medium);
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+.logout-btn button{
+    border: none;
+}
+
+.logout-btn i:hover {
+    color: var(--color-danger);
+}
+
+
+/* ===============================
+   CONTENT AREA
+================================ */
+.content {
+    margin-left: 260px;
+    padding: var(--spacing-lg);
+    width: 100%;
+    transition: margin-left 0.25s ease;
+}
+
+/* Content shift when collapsed */
+.sidebar.collapsed ~ .content {
+    margin-left: 72px;
+}
+
+
+/* ===============================
+   MOBILE NAVBAR (MOBILE ONLY)
+================================ */
+@media (max-width: 768px) {
+  /* Mobile Navbar */
+  .mobile-navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1400; /* above sidebar */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 56px;
+      padding: 0 14px;
+      background-color: var(--color-primary);
+      color: #fff;
+  }
+
+    /* Hide desktop header on mobile */
+    .sidebar .sidebar-header,
+    .sidebar .sidebar-user .user-info {
+        display: none;
+    }
+
+  .mobile-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+  }
+
+  .mobile-brand img {
+      width: 28px;
+      height: 28px;
+  }
+
+  .mobile-close-btn {
+        display: block;
+    }
+
+   .sidebar-header {
+        position: relative; /* needed for absolute positioning of close button */
+    } 
+
+  .mobile-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+  }
+
+  .mobile-menu-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.6rem;
+      cursor: pointer;
+  }
+
+  .mobile-profile .avatar {
+      width: 32px;
+      height: 32px;
+      font-size: 0.85rem;
+      background: #fff;
+      color: var(--color-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      border-radius: 50%;
+  }
+
+  /* Sidebar styling */
+  .sidebar {
+      position: fixed;
+      top: 56px; /* below navbar */
+      left: 0;
+      height: calc(100vh - 56px);
+      width: 260px;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      z-index: 1300;
+      background-color: var(--color-surface);
+  }
+
+  .sidebar.open {
+      transform: translateX(0);
+  }
+
+  /* Content */
+  .content {
+      margin-left: 0;
+      padding: 14px;
+  }
+
+  /* Hide desktop toggle icon */
+  .sidebar-toggle {
+      display: none;
+  }
 }

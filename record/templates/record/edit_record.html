@@ -1,23 +1,53 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Fintrack{% endblock  %}
-{% block style %} <link rel="stylesheet" href="{% static "record/style/edit_record.css" %}">{% endblock  %}
 
+{% block title %}Edit Record{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'record/style/edit_record.css' %}">
+{% endblock %}
 
-<body>
-    {% block content %}
-
+{% block content %}
 <div class="container mt-5">
   <h2 class="text-center mb-4">Edit Record</h2>
 
-  <form method="POST" >
+  <form method="POST">
     {% csrf_token %}
-    
+
+    <input type="hidden" name="next" value="{{ request.GET.next }}">
+    <!-- AMOUNT FIRST -->
     <div class="mb-3">
-      <label for="date" class="form-label">Date</label>
-      <input type="date" name="date" id="date" class="form-control" value="{{ record.date|date:'Y-m-d' }}" required>
+      <label for="amount" class="form-label">Amount</label>
+      <input type="number" name="amount" id="amount" class="form-control"
+             value="{{ record.amount }}" required step="0.01" autofocus>
     </div>
 
+    <!-- CATEGORY -->
+    <div class="mb-3">
+      <label for="category" class="form-label">Category</label>
+      <select id="category" name="category" class="form-select" required>
+        <option value="" disabled {% if not record.category %}selected{% endif %}>-- Select Category --</option>
+
+        <optgroup label="Income">
+          <option value="salary" data-type="Income" {% if record.category == 'salary' %}selected{% endif %}>Salary</option>
+          <option value="freelance" data-type="Income" {% if record.category == 'freelance' %}selected{% endif %}>Freelance</option>
+          <option value="investments" data-type="Income" {% if record.category == 'investments' %}selected{% endif %}>Investments</option>
+          <option value="gifts" data-type="Income" {% if record.category == 'gifts' %}selected{% endif %}>Gifts</option>
+          <option value="bonus" data-type="Income" {% if record.category == 'bonus' %}selected{% endif %}>Bonus</option>
+        </optgroup>
+
+        <optgroup label="Expense">
+          <option value="food" data-type="Expense" {% if record.category == 'food' %}selected{% endif %}>Food</option>
+          <option value="transport" data-type="Expense" {% if record.category == 'transport' %}selected{% endif %}>Transport</option>
+          <option value="entertainment" data-type="Expense" {% if record.category == 'entertainment' %}selected{% endif %}>Entertainment</option>
+          <option value="bills" data-type="Expense" {% if record.category == 'bills' %}selected{% endif %}>Bills</option>
+          <option value="shopping" data-type="Expense" {% if record.category == 'shopping' %}selected{% endif %}>Shopping</option>
+        </optgroup>
+
+        <option value="other" {% if record.category == 'other' %}selected{% endif %}>Other</option>
+      </select>
+    </div>
+
+    <!-- TYPE -->
     <div class="mb-3">
       <label for="type" class="form-label">Type</label>
       <select name="type" id="type" class="form-select" required>
@@ -26,46 +56,57 @@
       </select>
     </div>
 
- <div class="mb-3">
-  <label for="category" class="form-label">Category</label>
-  <select id="category" name="category" class="form-select" required>
-    <option value="" disabled {% if not record.category %}selected{% endif %}>-- Select Category --</option>
-
-    <optgroup label="Income">
-      <option value="salary" {% if record.category == 'salary' %}selected{% endif %}>Salary</option>
-      <option value="freelance" {% if record.category == 'freelance' %}selected{% endif %}>Freelance</option>
-      <option value="investments" {% if record.category == 'investments' %}selected{% endif %}>Investments</option>
-      <option value="gifts" {% if record.category == 'gifts' %}selected{% endif %}>Gifts</option>
-      <option value="bonus" {% if record.category == 'bonus' %}selected{% endif %}>Bonus</option>
-    </optgroup>
-
-    <optgroup label="Expense">
-      <option value="food" {% if record.category == 'food' %}selected{% endif %}>Food</option>
-      <option value="transport" {% if record.category == 'transport' %}selected{% endif %}>Transport</option>
-      <option value="entertainment" {% if record.category == 'entertainment' %}selected{% endif %}>Entertainment</option>
-      <option value="bills" {% if record.category == 'bills' %}selected{% endif %}>Bills</option>
-      <option value="shopping" {% if record.category == 'shopping' %}selected{% endif %}>Shopping</option>
-    </optgroup>
-
-    <option value="other" {% if record.category == 'other' %}selected{% endif %}>Other</option>
-  </select>
-  </div>
-
+    <!-- DATE -->
     <div class="mb-3">
+      <label for="date" class="form-label">Date</label>
+      <input type="date" name="date" id="date" class="form-control"
+             value="{{ record.date|date:'Y-m-d' }}" required>
+    </div>
+
+    <!-- ADD NOTE TOGGLE -->
+    <button type="button" id="toggleNote" class="btn btn-sm btn-link p-0 mb-2">
+      + Edit note
+    </button>
+
+    <!-- DESCRIPTION (HIDDEN BY DEFAULT) -->
+    <div class="mb-3 {% if not record.description %}d-none{% endif %}" id="noteField">
       <label for="description" class="form-label">Description</label>
       <textarea name="description" id="description" class="form-control">{{ record.description }}</textarea>
     </div>
 
-    <div class="mb-3">
-      <label for="amount" class="form-label">Amount</label>
-      <input type="number" name="amount" id="amount" class="form-control" value="{{ record.amount }}" required>
-    </div>
-    <div class="text-center">
+    <!-- ACTION BUTTONS -->
+    <div class="d-flex justify-content-end gap-2 mt-3">
+      <a href="{{ request.META.HTTP_REFERER|default:'/' }}" class="btn btn-outline-secondary">Cancel</a>
       <button type="submit" class="btn btn-warning">Save</button>
-      <a href="{{ request.META.HTTP_REFERER|default:'/' }}" class="btn btn-secondary">Cancel</a>
     </div>
   </form>
 </div>
-{% endblock %}
 
-</body>
+<script>
+  // Toggle description
+  const toggleBtn = document.getElementById("toggleNote");
+  const noteField = document.getElementById("noteField");
+
+  toggleBtn.addEventListener("click", () => {
+    noteField.classList.toggle("d-none");
+    toggleBtn.textContent = noteField.classList.contains("d-none")
+      ? "+ Edit note"
+      : "Hide note";
+  });
+
+  // Auto-update type based on category
+  const categorySelect = document.getElementById("category");
+  const typeSelect = document.getElementById("type");
+  let userChangedType = false;
+
+  typeSelect.addEventListener("change", () => userChangedType = true);
+
+  categorySelect.addEventListener("change", () => {
+    const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+    const inferredType = selectedOption.dataset.type;
+    if (!inferredType || userChangedType) return;
+    typeSelect.value = inferredType;
+  });
+</script>
+
+{% endblock %}

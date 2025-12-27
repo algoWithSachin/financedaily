@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
+from datetime import date
 
 class AddBudget(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -9,6 +10,15 @@ class AddBudget(models.Model):
     end_date = models.DateField()
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ('active', 'Active'),
+            ('completed', 'Completed'),
+        ],
+        default='active'
+    )
 
     class Meta:
         ordering = ['-created_at']
@@ -38,6 +48,16 @@ class AddBudget(models.Model):
             return 0
         return (float(self.spent_amount()) / float(self.amount)) * 100
 
+    def is_expired(self):
+        """True if the budget end date has passed."""
+        return self.end_date < date.today()
+
+
+    def auto_update_status(self):
+        """Automatically set status to completed when expired."""
+        if self.is_expired() and self.status != "completed":
+            self.status = "completed"
+            self.save(update_fields=["status"])
 
 
 

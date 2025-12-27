@@ -1,0 +1,87 @@
+/* ==============================
+   PAGE BASE
+================================ */
+body {
+  background: var(--color-bg-light);
+  color: var(--color-text-dark);
+}
+
+/* ==============================
+   CONTAINER
+================================ */
+.container {
+  max-width: 480px;
+}
+
+/* ==============================
+   HEADINGS
+================================ */
+h4 {
+  color: var(--color-text-dark);
+  letter-spacing: 0.2px;
+}
+
+/* ==============================
+   RECORD SUMMARY BOX
+================================ */
+.record-summary {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  font-size: 0.9rem;
+}
+
+.record-summary div {
+  margin-bottom: 4px;
+}
+
+.record-summary div:last-child {
+  margin-bottom: 0;
+}
+
+/* ==============================
+   WARNING TEXT
+================================ */
+p.text-muted {
+  font-size: 0.85rem;
+}
+
+/* ==============================
+   BUTTONS
+================================ */
+.btn-danger {
+  background-color: var(--color-danger);
+  border-color: var(--color-danger);
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-danger:hover {
+  background-color: #c82333; /* slightly darker */
+  border-color: #c82333;
+}
+
+.btn-outline-secondary {
+  border-color: var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.btn-outline-secondary:hover {
+  background-color: #f3f4f6;
+  color: var(--color-text-dark);
+}
+
+/* ==============================
+   RESPONSIVE
+================================ */
+@media (max-width: 576px) {
+  .container {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .record-summary {
+    font-size: 0.85rem;
+  }
+}

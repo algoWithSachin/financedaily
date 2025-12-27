@@ -1,0 +1,93 @@
+/* ==============================
+   CONTAINER
+================================ */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* ==============================
+   HEADINGS
+================================ */
+h2 {
+  color: var(--color-text-primary);
+  letter-spacing: 0.2px;
+}
+
+/* ==============================
+   BUDGET SUMMARY
+================================ */
+.text-center p {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 4px;
+}
+
+/* ==============================
+   BACK BUTTON
+================================ */
+.btn-outline-dark {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  margin-bottom: 20px;
+  text-decoration: none;
+}
+
+.btn-outline-dark:hover {
+  background: #f3f4f6;
+  color: var(--color-text-primary);
+}
+
+/* ==============================
+   EXPENSE TABLE
+================================ */
+.table-responsive {
+  margin-top: 20px;
+}
+
+.table {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+  font-size: 0.9rem;
+}
+
+.table th {
+  background-color: #343a40 !important;
+  color: #fff;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #f8f9fa;
+}
+
+.table td .text-success {
+  font-weight: 600;
+}
+
+.table td .text-danger {
+  font-weight: 600;
+}
+
+/* ==============================
+   RESPONSIVE
+================================ */
+@media (max-width: 576px) {
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+}

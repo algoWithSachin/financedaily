@@ -1,69 +1,70 @@
-{% extends "base.html" %}
 {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinanceDaily | Sign Up</title>
+    <link rel="icon" href="{% static 'image/favicon.png' %}">
+    <link rel="stylesheet" href="{% static 'style/variables.css' %}">
+    <link rel="stylesheet" href="{% static 'users/style/signup.css' %}">
+</head>
+<body>
 
-{% block title %}
-Fintrack | Signup
-{% endblock %}
+<main class="auth-page">
 
-{% block style %}
-<link rel="stylesheet" href="{% static 'users/style/signup.css' %}">
-{% endblock %}
+    <section class="auth-card">
 
-
-{% block content %}
-<div class="main">
-    <div class="container">
-        <div class="form-box">
-            <!-- Django Messages (errors, warnings, etc.) -->
-                {% if messages %}
-                    <div class="messages">
-                        {% for message in messages %}
-                            <!-- Add your CSS styles using message.tags as a class -->
-                            <p class="msg {{ message.tags }}">
-                                {{ message }}
-                            </p>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            <h2>Create Account</h2>
-
-            <form method="POST">
-                {% csrf_token %}
-
-                <div class="input-group">
-                    <label>First Name</label>
-                    <input type="text" name="firstname" placeholder="Enter your first name" required>
-                </div>
-
-                <div class="input-group">
-                    <label>Last Name</label>
-                    <input type="text" name="lastname" placeholder="Enter your last name" required>
-                </div>
-
-                <div class="input-group">
-                    <label>Username</label>
-                    <input type="text" name="username" placeholder="Enter your username" required>
-                </div>
-
-                <div class="input-group">
-                    <label>Password</label>
-                    <input type="password" name="password1" placeholder="Enter your password" required>
-                </div>
-
-                <div class="input-group">
-                    <label>Confirm Password</label>
-                    <input type="password" name="password2" placeholder="Confirm password" required>
-                </div>
-
-                <button type="submit" class="btn">Sign Up</button>
-
-                <p class="redirect">
-                    Already have an account?
-                    <a href="{% url 'login' %}">Login</a>
-                </p>
-
-            </form>
+        <!-- BRAND -->
+        <div class="auth-brand">
+            <img src="{% static 'users/images/logo.png' %}" alt="FinanceDaily Logo">
         </div>
-    </div>
-</div>
-{% endblock %}
+
+        <!-- HEADER -->
+        <header class="auth-header">
+            <h1>Create Your Account</h1>
+            <p class="subtitle">Gain control over your finances. Secure, fast, and free.</p>
+        </header>
+
+        <!-- MESSAGES -->
+        {% if messages %}
+        <div class="auth-messages">
+            {% for message in messages %}
+                <p class="message {{ message.tags }}" role="alert">{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- FORM -->
+        <form class="auth-form" method="POST" action="">
+            {% csrf_token %}
+
+            <div class="form-field">
+                <label for="username">Username</label>
+                <input id="username" name="username" type="text" placeholder="johndoe" required>
+            </div>
+
+            <div class="form-field">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="johndoe@gmail.com" required>
+            </div>
+
+            <div class="form-field">
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" placeholder="8+ characters" autocomplete="new-password" required>
+                <small class="password-hint">Use at least 8 characters. Mix letters and numbers.</small>
+            </div>
+
+            <button type="submit" class="btn-primary">Create Account</button>
+
+            <p class="redirect">
+                Already have an account? <a href="{% url 'login' %}">Log In</a>
+            </p>
+        </form>
+
+    </section>
+
+</main>
+
+</body>
+</html>

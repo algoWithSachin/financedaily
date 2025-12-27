@@ -1,0 +1,214 @@
+:root {
+  /* ========== BRAND ========== */
+  --color-primary: #005f73;        /* Trust / navigation */
+  --color-primary-dark: #003d4c;
+  --color-primary-light: #94d2bd;
+  --color-primary-light-hover: #73c9ac;
+
+  /* ========== ACCENT (CTA) ========== */
+  --color-accent: #e9c46a;         /* Add / Apply actions */
+  --color-accent-hover: #ddb84f;
+
+  /* ========== STATUS ========== */
+  --color-success: #2a9d8f;
+  --color-danger: #e63946;
+  --color-warning: #f4a261;
+
+  /* ========== BACKGROUND & SURFACE ========== */
+  --color-bg: #f8f9fa;
+  --color-surface: #ffffff;
+  --color-border: #e5e7eb;
+
+  /* ========== TEXT ========== */
+  --color-text-primary: #1f2933;
+  --color-text-secondary: #6b7280;
+  --color-text-muted: #9ca3af;
+}
+
+/* ==============================
+   BASE
+================================ */
+body {
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+}
+
+.container {
+  max-width: 1000px;
+  margin-top: 2rem;
+}
+
+/* ==============================
+   DJANGO MESSAGES
+================================ */
+
+.messages {
+  margin-bottom: 1.25rem;
+}
+
+.msg {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.msg.success {
+  border-left: 4px solid var(--color-success);
+}
+
+.msg.error,
+.msg.danger {
+  border-left: 4px solid var(--color-danger);
+}
+
+.msg.warning {
+  border-left: 4px solid var(--color-warning);
+}
+
+.msg.info {
+  border-left: 4px solid var(--color-primary);
+}
+
+/* ==============================
+   PAGE HEADER
+================================ */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.page-header h2 {
+  font-weight: 600;
+  margin: 0;
+  color: var(--color-text-primary);
+}
+
+/* ==============================
+   BUDGET CARD
+================================ */
+.budget-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+/* Slight visual distinction for completed */
+.completed-card {
+  opacity: 0.95;
+}
+
+/* ==============================
+   HEADER ROW
+================================ */
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.header-row h4 {
+  margin: 0;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.date {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+/* ==============================
+   STATUS BADGE
+================================ */
+.status-badge {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+/* Under budget */
+.status-badge.under {
+  background: rgba(42, 157, 143, 0.15);
+  color: var(--color-success);
+}
+
+/* Exactly on budget */
+.status-badge.normal {
+  background: rgba(233, 196, 106, 0.25);
+  color: #8a6d1d;
+}
+
+/* Overspent */
+.status-badge.over {
+  background: rgba(230, 57, 70, 0.15);
+  color: var(--color-danger);
+}
+
+/* ==============================
+   DETAILS
+================================ */
+.details {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.details p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+/* ==============================
+   ACTIONS
+================================ */
+.actions {
+  margin-top: 6px;
+}
+
+.actions .btn {
+  font-size: 0.8rem;
+  padding: 4px 12px;
+}
+
+/* ==============================
+   EMPTY STATE
+================================ */
+.empty-text {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  margin-top: 1rem;
+}
+
+/* ==============================
+   RESPONSIVE
+================================ */
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .header-row {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .details {
+    gap: 10px;
+  }
+}
