@@ -41,7 +41,7 @@ EMAIL_USE_TLS = os.environ["EMAIL_USE_TLS"].lower() in ("true", "1", "yes")
 EMAIL_HOST_USER = os.environ["EMAIL_HOST_USER"]
 EMAIL_HOST_PASSWORD = os.environ["EMAIL_HOST_PASSWORD"]
 
-DEFAULT_FROM_EMAIL = os.environ["DEFAULT_FROM_EMAIL"]
+DEFAULT_FROM_EMAIL = f"Finance Daily <{EMAIL_HOST_USER}>"
 FRONTEND_URL = os.environ["FRONTEND_URL"]
 
 
