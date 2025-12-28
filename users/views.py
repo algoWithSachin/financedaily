@@ -9,6 +9,8 @@ from django.conf import settings
 from django.utils.timezone import now
 from datetime import timedelta
 from django.views.decorators.http import require_POST
+from threading import Thread
+
 
 # ==============================
 # Signup view
@@ -49,8 +51,14 @@ def signup_view(request):
 
 
         # send email for verfication
-        send_mail_for_registration(email, email_verification_token)
+        Thread(
+            target=send_verification_email_async,
+            args=(email, email_verification_token),
+            daemon=True
+        ).start()
+
         return redirect('email_verification_sent')
+
     
     return render(request, 'users/signup.html')
 
@@ -143,6 +151,11 @@ def verify_email_view(request, token):
     return redirect('login')
 
 
+
+
+def send_verification_email_async(email, token):
+    send_mail_for_registration(email, token)
+
 # ==============================
 # send mail fuction
 # ==============================
@@ -206,7 +219,11 @@ def resend_verification_email(request):
             return redirect('resend_verification_email')
 
         token = generate_email_verification_token(profile)
-        send_mail_for_registration(request.user.email, token)
+        Thread(
+            target=send_verification_email_async,
+            args=(request.user.email, token),
+            daemon=True
+        ).start()
 
         profile.last_verification_email_sent = now()
         profile.save(update_fields=['last_verification_email_sent'])
