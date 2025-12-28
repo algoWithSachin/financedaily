@@ -31,16 +31,3 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # expire when browser closes
 SESSION_COOKIE_SECURE = False  # no HTTPS needed locally
 SESSION_COOKIE_HTTPONLY = True  # prevent JS access
 SESSION_SAVE_EVERY_REQUEST = True  # refresh expiry on every request
-
-# ---------------------------
-# EMAIL CONFIG
-# ---------------------------
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = os.environ["EMAIL_HOST"]
-EMAIL_PORT = int(os.environ["EMAIL_PORT"])
-EMAIL_HOST_USER = os.environ["EMAIL_HOST_USER"]
-EMAIL_HOST_PASSWORD = os.environ["EMAIL_HOST_PASSWORD"]
-EMAIL_USE_TLS = True
-
-FRONTEND_URL = "http://127.0.0.1:8000"
-DEFAULT_FROM_EMAIL = f"Finance Daily <{EMAIL_HOST_USER}>"

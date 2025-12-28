@@ -36,18 +36,3 @@ SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = "Lax"  
 SESSION_SAVE_EVERY_REQUEST = False  
 
-# ---------------------------
-# EMAIL CONFIG
-# ---------------------------
-EMAIL_BACKEND = os.environ["EMAIL_BACKEND"]
-EMAIL_HOST = os.environ["EMAIL_HOST"]
-EMAIL_PORT = int(os.environ["EMAIL_PORT"])
-EMAIL_USE_TLS = os.environ["EMAIL_USE_TLS"].lower() in ("true", "1", "yes")
-EMAIL_HOST_USER = os.environ["EMAIL_HOST_USER"]
-EMAIL_HOST_PASSWORD = os.environ["EMAIL_HOST_PASSWORD"]
-
-DEFAULT_FROM_EMAIL = f"Finance Daily <{EMAIL_HOST_USER}>"
-FRONTEND_URL = os.environ["FRONTEND_URL"]
-
-
-CSRF_TRUSTED_ORIGINS = [FRONTEND_URL]
