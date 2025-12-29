@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Edit Record{% endblock %}
+{% block title %}Edit Record - {{ record.category }} | FinanceDaily{% endblock %}
 {% block style %}
+<link rel="stylesheet" href="{% static 'style/variables.css' %}">
 <link rel="stylesheet" href="{% static 'record/style/edit_record.css' %}">
 {% endblock %}
 

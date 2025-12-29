@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}Dashboard | FinanceDaily{% endblock %}
 
 {% block style %}
+<link rel="stylesheet" href="{% static 'style/variables.css' %}">
 <link rel="stylesheet" href="{% static 'dashboard/style/dashboard.css' %}">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}

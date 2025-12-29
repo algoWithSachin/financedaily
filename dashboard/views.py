@@ -9,8 +9,7 @@ from .utlis import filter_records_by_period
 # Create your views here.
 @login_required
 def dashboard_view(request):
-    user = request.user
-
+    user = request.user   
     # 1️⃣ READ FILTER FROM GET (NOT POST)
     time_period = request.GET.get("time_period", "this_month")
     start_date = request.GET.get("start_date")

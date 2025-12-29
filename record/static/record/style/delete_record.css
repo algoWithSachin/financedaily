@@ -1,87 +1,109 @@
-/* ==============================
-   PAGE BASE
-================================ */
+/* ===================== BASE ===================== */
 body {
-  background: var(--color-bg-light);
-  color: var(--color-text-dark);
+    margin: 0;
+    font-family: var(--font-family-base);
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
 }
 
-/* ==============================
-   CONTAINER
-================================ */
-.container {
-  max-width: 480px;
+/* ===================== CONTAINER ===================== */
+.container.mt-5 {
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
 }
 
-/* ==============================
-   HEADINGS
-================================ */
-h4 {
-  color: var(--color-text-dark);
-  letter-spacing: 0.2px;
+.container.mt-5 .mx-auto {
+    max-width: 420px;
 }
 
-/* ==============================
-   RECORD SUMMARY BOX
-================================ */
+/* ===================== HEADER ===================== */
+h4.fw-semibold.mb-3 {
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text-primary);
+}
+
+/* ===================== RECORD SUMMARY CARD ===================== */
 .record-summary {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  font-size: 0.9rem;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-md);
+    box-shadow: var(--shadow-sm);
+    font-size: var(--font-size-base);
 }
 
 .record-summary div {
-  margin-bottom: 4px;
+    margin-bottom: var(--spacing-xs);
+    color: var(--color-text-secondary);
 }
 
-.record-summary div:last-child {
-  margin-bottom: 0;
+/* ===================== WARNING TEXT ===================== */
+p.text-muted.mb-4 {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-md);
 }
 
-/* ==============================
-   WARNING TEXT
-================================ */
-p.text-muted {
-  font-size: 0.85rem;
+/* ===================== FORM BUTTONS ===================== */
+form.d-flex.justify-content-end.gap-2 {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
 }
 
-/* ==============================
-   BUTTONS
-================================ */
-.btn-danger {
-  background-color: var(--color-danger);
-  border-color: var(--color-danger);
-  color: #fff;
-  font-weight: 600;
+form.d-flex.justify-content-end.gap-2 a,
+form.d-flex.justify-content-end.gap-2 button {
+    min-width: 100px;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-md);
+    font-weight: 500;
+    text-align: center;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.btn-danger:hover {
-  background-color: #c82333; /* slightly darker */
-  border-color: #c82333;
+/* CANCEL BUTTON */
+form.d-flex.justify-content-end.gap-2 a.btn-outline-secondary {
+    background-color: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
 }
 
-.btn-outline-secondary {
-  border-color: var(--color-border);
-  color: var(--color-text-muted);
+form.d-flex.justify-content-end.gap-2 a.btn-outline-secondary:hover {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary-dark);
+    border-color: var(--color-primary-light);
 }
 
-.btn-outline-secondary:hover {
-  background-color: #f3f4f6;
-  color: var(--color-text-dark);
+/* DELETE BUTTON */
+form.d-flex.justify-content-end.gap-2 button.btn-danger {
+    background-color: var(--color-danger);
+    border: 1px solid var(--color-danger);
+    color: #fff;
 }
 
-/* ==============================
-   RESPONSIVE
-================================ */
-@media (max-width: 576px) {
-  .container {
-    padding-left: 14px;
-    padding-right: 14px;
-  }
+form.d-flex.justify-content-end.gap-2 button.btn-danger:hover {
+    background-color: #c32a3b; /* slightly darker */
+    border-color: #c32a3b;
+    color: #fff;
+}
 
-  .record-summary {
-    font-size: 0.85rem;
-  }
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 768px) {
+
+    .container.mt-5 {
+        padding-left: var(--spacing-sm);
+        padding-right: var(--spacing-sm);
+    }
+
+    form.d-flex.justify-content-end.gap-2 {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    form.d-flex.justify-content-end.gap-2 a,
+    form.d-flex.justify-content-end.gap-2 button {
+        width: 100%;
+    }
 }

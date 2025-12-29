@@ -1,122 +1,147 @@
-/* ==============================
-   PAGE BASE
-================================ */
+/* ===================== BASE ===================== */
 body {
-  background: var(--color-bg);
-  color: var(--color-text-primary);
+    margin: 0;
+    font-family: var(--font-family-base);
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
 }
 
-/* ==============================
-   CONTAINER
-================================ */
-.container {
-  max-width: 520px;
+/* ===================== FORM CONTAINER ===================== */
+.container.mt-5 {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
 }
 
-/* ==============================
-   HEADING
-================================ */
-h2 {
-  color: var(--color-text-primary);
-  letter-spacing: 0.2px;
+form.p-4.bg-white.rounded.shadow-sm {
+    background-color: var(--color-surface);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+    padding: var(--spacing-lg);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* ==============================
-   FORM CARD
-================================ */
-form {
-  background: var(--color-surface);
-  border-radius: 12px;
-  border: 1px solid var(--color-border);
+form.p-4.bg-white.rounded.shadow-sm:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.12);
 }
 
-/* ==============================
-   LABELS
-================================ */
+/* ===================== FORM ELEMENTS ===================== */
 .form-label {
-  font-size: 0.85rem;
-  color: var(--color-text-secondary);
+    font-weight: 500;
+    color: var(--color-text-primary);
 }
 
-/* ==============================
-   INPUTS & SELECTS
-================================ */
-.form-control,
-.form-select {
-  border-radius: 8px;
-  border: 1px solid var(--color-border);
-  font-size: 0.95rem;
+input.form-control,
+select.form-select,
+textarea.form-control {
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-sm);
+    font-size: var(--font-size-base);
+    width: 100%;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.form-control:focus,
-.form-select:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 0.15rem rgba(0, 95, 115, 0.15);
+input.form-control:focus,
+select.form-select:focus,
+textarea.form-control:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(0,95,115,0.2);
+    outline: none;
 }
 
-/* Amount field emphasis */
-#amount {
-  font-size: 1.05rem;
-  font-weight: 600;
-}
-
-/* ==============================
-   ADD NOTE TOGGLE
-================================ */
-#toggleNote {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--color-primary);
-  text-decoration: none;
-}
-
-#toggleNote:hover {
-  text-decoration: underline;
-}
-
-/* ==============================
-   DESCRIPTION FIELD
-================================ */
-#noteField textarea {
-  resize: vertical;
-  min-height: 90px;
-}
-
-/* ==============================
-   ACTION BUTTONS
-================================ */
+/* ===================== BUTTONS ===================== */
 .btn-primary {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-  color: #1f2933;
-  font-weight: 600;
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+    border-radius: var(--border-radius-md);
+    transition: background-color 0.2s ease;
 }
 
 .btn-primary:hover {
-  background: var(--color-accent-hover);
-  border-color: var(--color-accent-hover);
+    background-color: var(--color-primary-hover);
+    color: #fff;
 }
 
 .btn-outline-secondary {
-  border-color: var(--color-border);
-  color: var(--color-text-secondary);
+    border-color: var(--color-border);
+    color: var(--color-text-primary);
+    border-radius: var(--border-radius-md);
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .btn-outline-secondary:hover {
-  background: #f3f4f6;
-  color: var(--color-text-primary);
+    background-color: var(--color-primary-light);
+    color: var(--color-primary-dark);
 }
 
-/* ==============================
-   RESPONSIVE
-================================ */
-@media (max-width: 576px) {
-  .container {
-    padding-left: 14px;
-    padding-right: 14px;
-  }
+/* ===================== TOGGLE NOTE ===================== */
+#toggleNote {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0;
+    margin-bottom: var(--spacing-sm);
+    transition: color 0.2s ease;
+}
 
-  form {
-    padding: 1.25rem !important;
-  }
+#toggleNote:hover {
+    color: var(--color-primary-hover);
+}
+
+#noteField {
+    margin-bottom: var(--spacing-md);
+}
+
+/* ===================== ACTIONS ===================== */
+.d-flex.justify-content-end.gap-2 {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: flex-end;
+}
+
+.d-flex.justify-content-end.gap-2 a,
+.d-flex.justify-content-end.gap-2 button {
+    min-width: 100px;
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 768px) {
+
+    .container.mt-5 {
+        padding-left: var(--spacing-sm);
+        padding-right: var(--spacing-sm);
+    }
+
+    /* TYPE + DATE columns stack */
+    .row > .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: var(--spacing-md);
+    }
+
+    /* Buttons stack vertically */
+    .d-flex.justify-content-end.gap-2 {
+        flex-direction: column;
+    }
+
+    .d-flex.justify-content-end.gap-2 a,
+    .d-flex.justify-content-end.gap-2 button {
+        width: 100%;
+    }
+
+    #toggleNote {
+        width: 100%;
+        text-align: left;
+    }
+
+    textarea#description {
+        min-height: 100px;
+    }
 }

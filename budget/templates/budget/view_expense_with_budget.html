@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}{{ budget.name }} Budget | Fintrack{% endblock %}
+{% block title %}Active Budget Expenses – {{ budget.name }} | FinanceDaily{% endblock %}
 {% block style %}
 <link rel="stylesheet" href="{% static 'budget/style/view_expense_with_budget.css' %}">
 {% endblock %}
@@ -19,7 +19,7 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
       <div>
         <a href="{% url "budget_list" %}" class="btn btn-outline-secondary btn-sm">
-          ← Back to Budgets
+          ← Back to Active Budgets
         </a>
       </div>
       <div>

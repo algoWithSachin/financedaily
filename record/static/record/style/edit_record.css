@@ -1,133 +1,123 @@
-/* ==============================
-   PAGE BASE
-================================ */
+/* ===================== BASE ===================== */
 body {
-  background: var(--color-bg-light);
-  color: var(--color-text-body);
-  font-family: "Segoe UI", sans-serif;
+    font-family: var(--font-family-base);
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
 }
 
-/* ==============================
-   CONTAINER
-================================ */
-.container {
-  max-width: 520px;
+/* ===================== CONTAINER ===================== */
+.container.mt-5 {
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+    max-width: 480px;
+    margin: 0 auto;
 }
 
-/* ==============================
-   HEADING
-================================ */
-h2 {
-  color: var(--color-text-dark);
-  letter-spacing: 0.2px;
-  font-weight: 600;
+/* ===================== HEADER ===================== */
+h2.text-center.mb-4 {
+    font-weight: 600;
+    margin-bottom: var(--spacing-lg);
+    color: var(--color-text-primary);
 }
 
-/* ==============================
-   FORM CARD
-================================ */
-form {
-  background: var(--color-surface);
-  padding: 1.5rem;
-  border-radius: 12px;
-  border: 1px solid var(--color-border);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+/* ===================== FORM FIELDS ===================== */
+form .form-label {
+    font-weight: 500;
+    color: var(--color-text-secondary);
 }
 
-/* ==============================
-   LABELS
-================================ */
-.form-label {
-  font-size: 0.85rem;
-  color: var(--color-text-secondary);
-  font-weight: 500;
+form .form-control,
+form .form-select,
+form textarea.form-control {
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    padding: 0.5rem 0.75rem;
+    font-size: var(--font-size-base);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* ==============================
-   INPUTS & SELECTS
-================================ */
-.form-control,
-.form-select {
-  border-radius: 8px;
-  border: 1px solid var(--color-border);
-  font-size: 0.95rem;
-  padding: 0.5rem 0.75rem;
+form .form-control:focus,
+form .form-select:focus,
+form textarea.form-control:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 0.2rem var(--color-focus-ring);
+    outline: none;
 }
 
-.form-control:focus,
-.form-select:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 0.15rem rgba(0, 95, 115, 0.15);
-}
-
-/* Amount field emphasis */
-#amount {
-  font-size: 1.05rem;
-  font-weight: 600;
-}
-
-/* ==============================
-   ADD NOTE TOGGLE
-================================ */
+/* ===================== NOTE TOGGLE ===================== */
 #toggleNote {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--color-primary);
-  text-decoration: none;
-  cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-primary);
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
 }
 
 #toggleNote:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
-/* ==============================
-   DESCRIPTION FIELD
-================================ */
-#noteField textarea {
-  resize: vertical;
-  min-height: 90px;
+/* ===================== ACTION BUTTONS ===================== */
+.d-flex.justify-content-end.gap-2 {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
 }
 
-/* ==============================
-   BUTTONS
-================================ */
-.btn-warning {
-  background-color: var(--color-accent);
-  border-color: var(--color-accent);
-  color: #1f2933;
-  font-weight: 600;
+.d-flex.justify-content-end.gap-2 a,
+.d-flex.justify-content-end.gap-2 button {
+    min-width: 100px;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-md);
+    font-weight: 500;
+    text-align: center;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.btn-warning:hover {
-  background-color: var(--color-accent-hover);
-  border-color: var(--color-accent-hover);
+/* CANCEL BUTTON */
+.d-flex.justify-content-end.gap-2 a.btn-outline-secondary {
+    background-color: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
 }
 
-.btn-outline-secondary {
-  border-color: var(--color-border);
-  color: var(--color-text-secondary);
+.d-flex.justify-content-end.gap-2 a.btn-outline-secondary:hover {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary-dark);
+    border-color: var(--color-primary-light);
 }
 
-.btn-outline-secondary:hover {
-  background: #f3f4f6;
-  color: var(--color-text-primary);
+/* SAVE BUTTON */
+.d-flex.justify-content-end.gap-2 button.btn-warning {
+    background-color: var(--color-warning);
+    border: 1px solid var(--color-warning);
+    color: #fff;
 }
 
-/* ==============================
-   RESPONSIVE
-================================ */
-@media (max-width: 576px) {
-  .container {
-    padding-left: 14px;
-    padding-right: 14px;
-  }
+.d-flex.justify-content-end.gap-2 button.btn-warning:hover {
+    background-color: #e07b3d; /* slightly darker shade */
+    border-color: #e07b3d;
+    color: #fff;
+}
 
-  form {
-    padding: 1.25rem !important;
-  }
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 768px) {
 
-  #amount {
-    font-size: 1rem;
-  }
+    .container.mt-5 {
+        padding-left: var(--spacing-sm);
+        padding-right: var(--spacing-sm);
+    }
+
+    .d-flex.justify-content-end.gap-2 {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .d-flex.justify-content-end.gap-2 a,
+    .d-flex.justify-content-end.gap-2 button {
+        width: 100%;
+    }
 }

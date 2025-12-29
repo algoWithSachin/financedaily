@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Fintrack{% endblock %}
+{% block title %}Create Budget | FinanceDaily{% endblock %}
 {% block style %}
 <link rel="stylesheet" href="{% static 'budget/style/set_budget.css' %}">
 {% endblock %}
@@ -9,7 +9,7 @@
 <div class="container mt-5">
     
     <div class="text-center mb-4">
-        <h2 class="fw-bold">Set New Budget</h2>
+        <h2 class="fw-bold">Create New Budget</h2>
     </div>
 
     <form action="{% url 'set_budget' %}" method="POST" class="p-4 shadow rounded bg-white border-0">

@@ -213,16 +213,14 @@ body {
     justify-content: space-between;
     border-top: 1px solid var(--color-border);
     background-color: #eeeaea;
-    padding: 10px;
-    margin: var(--spacing-sm);
+    margin: 0px 8px;
     margin-top: auto;
 }
 
 .user-info {
     display: flex;
+    padding: 10px;
     gap: var(--spacing-sm);
-    margin-left: var(--spacing-sm);
-    margin-right: var(--spacing-sm);
 }
 .avatar {
     width: 36px;

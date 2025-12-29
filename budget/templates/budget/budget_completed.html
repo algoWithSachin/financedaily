@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Completed Budgets{% endblock %}
+{% block title %}Completed Budgets | FinanceDaily{% endblock %}
 {% block style %}
 <link rel="stylesheet" href="{% static 'budget/style/budget_completed.css' %}">
 {% endblock %}
@@ -19,8 +19,8 @@
   {% endif %}
 
     <div class="page-header">
-        <h2>Completed Budgets</h2>
-        <a href="{% url 'budget_list' %}" class="btn btn-outline-dark">← Back to Active</a>
+        <h1>Completed Budgets</h1>
+        <a href="{% url 'budget_list' %}" class="btn btn-outline-dark">← Back to Active Budgets</a>
     </div>
 
     {% if budget_completed %}
@@ -38,7 +38,7 @@
                 {% if b.used_percent < 100 %}
                     ✔ Under Budget
                 {% elif b.used_percent == 100 %}
-                    • On Budget
+                    ✔ On Budget
                 {% else %}
                     ⚠ Overspent
                 {% endif %}
@@ -51,7 +51,7 @@
             </div>
 
             <div class="actions">
-                <a href="{% url 'view_completed_budget_expenses' b.id %}" class="btn btn-sm btn-outline-dark">View Details</a>
+                <a href="{% url 'view_completed_budget_expenses' b.id %}" class="btn btn-sm btn-outline-dark">View Expenses</a>
                 <a href="{% url 'delete_budget' b.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
 
             </div>

@@ -12,22 +12,22 @@ from django.views.decorators.http import require_POST
 def signup_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
+        email = request.POST.get('email')
 
         # username check
         if User.objects.filter(username=username).exists():
             messages.error(request, "username already taken. Please choose another one.")
             return redirect('signup')
         
-        email = request.POST.get('email')
-        # email check
-        if User.objects.filter(email=email).exists():
+         # email check
+        elif User.objects.filter(email=email).exists():
             messages.error(request, "email already taken. Please choose another one.")
             return redirect('signup')
 
         password = request.POST.get('password')
 
         # Create user-obj
-        user = User.objects.create_user(
+        User.objects.create_user(
             username=username,
             email=email,
             password=password

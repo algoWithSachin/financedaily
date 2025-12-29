@@ -1,11 +1,9 @@
 from django.urls import path
-from . import views
+from .views import record_view, add_record, delete_record, edit_record
 
 urlpatterns = [
-    path('', views.record_view, name="record_list"),
-    path('add-record/', views.add_record, name="add_record"),
-    path('delete-record/<int:record_id>/', views.delete_record, name="delete_record"),
-    path('edit-record/<int:record_id>/', views.edit_record, name="edit_record"),
-    path('download-pdf', views.download_pdf, name="download_pdf"),
-
+    path('', record_view, name="record_list"),
+    path('add-record/', add_record, name="add_record"),
+    path('delete-record/<int:record_id>/', delete_record, name="delete_record"),
+    path('edit-record/<int:record_id>/', edit_record, name="edit_record"),
 ]

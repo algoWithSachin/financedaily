@@ -22,3 +22,7 @@ later/
 # OS
 Thumbs.db
 .DS_Store
+
+# local PowerShell run script
+run.ps1
+boot.ps1

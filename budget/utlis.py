@@ -1,5 +1,4 @@
 from django.contrib import messages
-from datetime import date
 
 def validate_budget_dates(request, start_date, end_date, budget_name="Budget"):
     """

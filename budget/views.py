@@ -2,10 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import AddBudget
-from record.models import AddRecord
-from dashboard.utlis import filter_records_by_period
-from django.db.models import Sum
 from .utlis import *
+from django.db.models import Sum, Q
 
 # ==========================
 # LIST ALL USER BUDGETS
@@ -14,28 +12,16 @@ from .utlis import *
 def budget_list(request):
     user = request.user
 
-    # Fetch user budgets
-    budgets = AddBudget.objects.filter(user=user)
+    # Only active budgets, DB-level filter
+    budgets = AddBudget.objects.filter(user=user, status="active")
 
     active_budgets = []
 
     for b in budgets:
-        # Auto-update expired budgets (moves them to completed)
-        b.auto_update_status()
-
-        # Only alert if it's still active
-        if b.status == "active":
-            budget_alerts(request, b)
-
-        # Skip completed ones — they belong to the completed page
-        if b.status == "completed":
-            continue
-
-        # Calculate values
+        # Calculate spent, remaining, used % once
         spent = b.spent_amount()
-        remaining = b.remaining()
-        used_percent = b.used_percent()
-
+        remaining = float(b.amount) - spent
+        used_percent = (spent / float(b.amount)) * 100 if b.amount else 0
 
         # Color logic
         if used_percent < 50:
@@ -45,7 +31,6 @@ def budget_list(request):
         else:
             color = "#e63946"
 
-        # Add to active budget list
         active_budgets.append({
             'id': b.id,
             'name': b.name,
@@ -67,6 +52,7 @@ def budget_list(request):
 
 @login_required
 def set_budget(request):
+    from datetime import date
     if request.method == "POST":
         name = request.POST.get('name', 'Budget')
         start_date_str = request.POST.get('start_date')
@@ -132,6 +118,7 @@ def edit_budget(request, budget_id):
 # ==========================
 @login_required
 def delete_budget(request, budget_id):
+    from record.models import AddRecord
     user = request.user
     budget = get_object_or_404(AddBudget, id=budget_id, user=user)
     if request.method == "POST":
@@ -147,6 +134,7 @@ def delete_budget(request, budget_id):
 # ==========================
 @login_required
 def add_expense_with_budget(request, budget_id):
+    from record.models import AddRecord
     user = request.user
     budget = get_object_or_404(AddBudget, id=budget_id, user=user)
 
@@ -180,6 +168,7 @@ def add_expense_with_budget(request, budget_id):
 # ==========================
 @login_required
 def view_expense_with_budget(request, budget_id):
+    from record.models import AddRecord
     user = request.user
     budget = get_object_or_404(AddBudget, id=budget_id, user=user)
 
@@ -198,6 +187,7 @@ def view_expense_with_budget(request, budget_id):
 
 @login_required
 def view_completed_budget_expenses(request, budget_id):
+    from record.models import AddRecord
     user = request.user
     budget = get_object_or_404(AddBudget, id=budget_id, user=user)
 
@@ -218,32 +208,21 @@ def view_completed_budget_expenses(request, budget_id):
 @login_required
 def budget_completed_view(request):
     user = request.user
-
     budgets = AddBudget.objects.filter(user=user)
     completed_list = []
 
     for b in budgets:
+        b.auto_update_status()  # Only here we need update
 
-        # Auto-update expired budgets -> sets status='completed'
-        b.auto_update_status()
-
-        # Only include budgets that are actually completed
         if b.status != "completed":
             continue
-  
+
         spent = b.spent_amount()
-        remaining = b.remaining()
-        used_percent = b.used_percent()
+        remaining = float(b.amount) - spent
+        used_percent = (spent / float(b.amount)) * 100 if b.amount else 0
 
-        # Determine status badge
-        if used_percent < 100:
-            badge = "under"
-        elif used_percent == 100:
-            badge = "normal"
-        else:
-            badge = "over"
+        badge = "under" if used_percent < 100 else "normal" if used_percent == 100 else "over"
 
-        # Format completed list data
         completed_list.append({
             'id': b.id,
             'name': b.name,
@@ -253,12 +232,10 @@ def budget_completed_view(request):
             'used_percent': round(used_percent, 2),
             'start_date': b.start_date,
             'end_date': b.end_date,
-            'completion_status': badge,  # under | normal | over
+            'completion_status': badge,
         })
 
-    return render(request, "budget/budget_completed.html", {
-        "budget_completed": completed_list,
-    })
+    return render(request, "budget/budget_completed.html", {"budget_completed": completed_list})
 
 
 # ==========================

@@ -1,13 +1,11 @@
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import AddRecord
 from django.db.models import Sum
 from dashboard.utlis import filter_records_by_period
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A4
-from datetime import datetime
-from budget.models import AddBudget
+
+
 
 # ================================
 # RECORD LIST / VIEW
@@ -119,77 +117,3 @@ def delete_record(request, record_id):
 
     return render(request, 'record/delete_record.html', {'record': record})
 
-
-# ================================
-# DOWNLOAD PDF
-# ================================
-@login_required
-def download_pdf(request):
-    user = request.user
-
-    if request.method == 'POST':
-        records_list = AddRecord.objects.filter(user=user)
-        from_date_str = request.POST.get('from_date')
-        to_date_str = request.POST.get('to_date')
-
-        from_date = datetime.strptime(from_date_str, "%Y-%m-%d").date()
-        to_date = datetime.strptime(to_date_str, "%Y-%m-%d").date()
-
-        records = filter_records_by_period(
-            record_list=records_list,
-            time_period='custom',
-            start_date=from_date,
-            end_date=to_date
-        )
-
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="FinTrack_{from_date}_to_{to_date}.pdf"'
-
-        p = canvas.Canvas(response, pagesize=A4)
-        width, height = A4
-
-        # Header
-        p.setFont("Helvetica-Bold", 16)
-        p.drawString(180, height - 50, "FinTrack - Records Report")
-        p.setFont("Helvetica", 12)
-        p.drawString(50, height - 80, f"Period: {from_date} to {to_date}")
-
-        # Table headers
-        y = height - 120
-        headers = ["Date", "Type", "Category", "Description", "Amount"]
-        x_positions = [50, 150, 250, 350, 480]
-        p.setFont("Helvetica-Bold", 11)
-        for i, header in enumerate(headers):
-            p.drawString(x_positions[i], y, header)
-        p.line(45, y - 5, 550, y - 5)
-        y -= 20
-        p.setFont("Helvetica", 10)
-
-        # Table rows
-        if not records.exists():
-            p.drawString(50, y, "No records found in this date range.")
-        else:
-            for record in records:
-                if y < 100:
-                    p.showPage()
-                    y = height - 120
-                    p.setFont("Helvetica-Bold", 11)
-                    for i, header in enumerate(headers):
-                        p.drawString(x_positions[i], y, header)
-                    p.line(45, y - 5, 550, y - 5)
-                    y -= 20
-                    p.setFont("Helvetica", 10)
-
-                p.drawString(50, y, str(record.date))
-                p.drawString(150, y, record.type)
-                p.drawString(250, y, record.category)
-                p.drawString(350, y, record.description[:30])
-                p.drawString(480, y, str(record.amount))
-                y -= 20
-
-        p.showPage()
-        p.save()
-        messages.success(request, "PDF generated successfully!")
-        return response
-
-    return render(request, 'record/download_pdf.html')

@@ -39,7 +39,7 @@ body {
 /* ==============================
    PAGE HEADER
 ================================ */
-h2 {
+h1 {
   font-weight: 600;
   color: var(--color-text-primary);
 }
