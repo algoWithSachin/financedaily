@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'style/variables.css' %}">
+<link rel="stylesheet" href="{% static 'dashboard/style/dashboard.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+{% block content %}
+
+<div class="dashboard-grid">
+
+  <!-- LEFT -->
+  <div class="main-panel">
+
+    <!-- CARDS -->
+    <div class="cards">
+      <div class="card">
+        <h5>Income</h5>
+        <div class="value income">₹{{ total_income }}</div>
+      </div>
+
+      <div class="card">
+        <h5>Expense</h5>
+        <div class="value expense">₹{{ total_expenses }}</div>
+      </div>
+
+      <div class="card">
+        <h5>Balance</h5>
+        <div class="value balance">₹{{ total_balance }}</div>
+      </div>
+
+      <div class="card">
+        <h5>Budgets</h5>
+        <div class="value">{{ total_active_budgets }}</div>
+      </div>
+    </div>
+
+    <!-- TREND -->
+    <div class="chart-card">
+      <h5>Monthly Trend</h5>
+      <canvas id="monthlyTrend"></canvas>
+    </div>
+
+    <!-- WEEKLY -->
+    <div class="chart-card">
+      <h5>Last 7 Days Spending</h5>
+      <canvas id="weeklyChart"></canvas>
+    </div>
+
+  </div>
+
+  <!-- RIGHT -->
+  <div class="side-panel">
+
+    <div class="chart-card">
+      <h5>Category Breakdown</h5>
+      <canvas id="categoryChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <h5>Savings Ratio</h5>
+      <canvas id="savingsChart"></canvas>
+    </div>
+
+    <!-- RECENT -->
+    <div class="recent">
+      <h5>Recent Transactions</h5>
+
+      {% for t in recent_5_records %}
+      <div class="txn">
+        <div>
+          <strong>{{ t.category }}</strong><br>
+          <small>{{ t.date }}</small>
+        </div>
+
+        <div class="{% if t.type == 'Income' %}green{% else %}red{% endif %}">
+          ₹{{ t.amount }}
+        </div>
+      </div>
+      {% empty %}
+      <p>No data</p>
+      {% endfor %}
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- CHART JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+new Chart(document.getElementById('monthlyTrend'), {
+  type: 'line',
+  data: {
+    labels: {{ monthly_labels|safe }},
+    datasets: [
+      {
+        label: 'Income',
+        data: {{ monthly_income|safe }},
+        borderColor: '#2a9d8f',
+        tension: 0.4
+      },
+      {
+        label: 'Expense',
+        data: {{ monthly_expenses|safe }},
+        borderColor: '#e63946',
+        tension: 0.4
+      }
+    ]
+  }
+});
+
+new Chart(document.getElementById('weeklyChart'), {
+  type: 'bar',
+  data: {
+    labels: {{ weekly_labels|safe }},
+    datasets: [{
+      data: {{ weekly_expenses|safe }},
+      backgroundColor: '#005f73'
+    }]
+  }
+});
+
+new Chart(document.getElementById('categoryChart'), {
+  type: 'doughnut',
+  data: {
+    labels: {{ category_labels|safe }},
+    datasets: [{
+      data: {{ category_values|safe }},
+      backgroundColor: ['#005f73','#2a9d8f','#e9c46a','#f4a261','#e63946']
+    }]
+  }
+});
+
+new Chart(document.getElementById('savingsChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Saved', 'Spent'],
+    datasets: [{
+      data: [{{ total_balance }}, {{ total_expenses }}],
+      backgroundColor: ['#2a9d8f', '#e63946']
+    }]
+  }
+});
+
+</script>
+
+{% endblock %}

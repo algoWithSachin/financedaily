@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+from record.serializers import AddRecordSerializers
 
 def filter_records_by_period(record_list, time_period, start_date=None, end_date=None):
 
@@ -23,3 +24,7 @@ def filter_records_by_period(record_list, time_period, start_date=None, end_date
         return record_list  # if user select all records
 
     return record_list  
+
+
+def total_expense(query_set):
+   pass

@@ -26,6 +26,10 @@ INSTALLED_APPS = [
     'record',
     'users',
     'dashboard',
+    'assistant',
+
+    # third-party apps
+    'rest_framework',
 ]
 
 # ---------------------------
@@ -108,4 +112,5 @@ CSRF_COOKIE_SECURE = True
 X_FRAME_OPTIONS = "DENY"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 

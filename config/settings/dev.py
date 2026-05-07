@@ -13,13 +13,23 @@ ALLOWED_HOSTS = [
     "[::1]",
 ]
 
-# Force sqlite in dev
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'financedaily',
+        'USER': 'postgres',
+        'PASSWORD': 'root',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
@@ -31,3 +41,10 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # expire when browser closes
 SESSION_COOKIE_SECURE = False  # no HTTPS needed locally
 SESSION_COOKIE_HTTPONLY = True  # prevent JS access
 SESSION_SAVE_EVERY_REQUEST = True  # refresh expiry on every request
+
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5
+}
