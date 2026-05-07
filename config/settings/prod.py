@@ -4,13 +4,13 @@ import dj_database_url
 
 DEBUG = False
 
-SECRET_KEY = os.environ["SECRET_KEY"]
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
-ALLOWED_HOSTS = ["https://financedaily.onrender.com"]
+ALLOWED_HOSTS = ["financedaily.onrender.com"]
 
 DATABASES = {
     "default": dj_database_url.config(
-        default=os.environ["DATABASE_URL"],
+        default=os.environ.get("DATABASE_URL"),
         conn_max_age=600,
     )
 }

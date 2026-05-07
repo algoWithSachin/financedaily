@@ -4,7 +4,7 @@ from pathlib import Path
 # PATHS
 # ---------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-
+SECRET_KEY = None
 # ---------------------------
 # ALLOWED HOSTS
 # ---------------------------
