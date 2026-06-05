@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: financedaily
+    env: python
+    plan: free
+
+    buildCommand: |
+      pip install uv
+      uv sync --no-dev
+      python manage.py collectstatic --noinput
+      python manage.py migrate
+
+    startCommand: gunicorn config.wsgi:application
+
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11"

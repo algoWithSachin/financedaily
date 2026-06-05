@@ -1,0 +1,31 @@
+{
+  "name": "financedaily",
+  "version": "1.0.0",
+  "description": "**Fintrack** is a Django-based web application designed to help users manage personal finances efficiently. It tracks income, expenses, and budgets, providing visual insights to make smarter financial decisions.",
+  "main": "index.js",
+  "scripts": {
+    "watch": "tailwindcss -i ./static/tailwindcss/input.css -o ./static/tailwindcss/output.css --watch",
+    "django": ".venv\\Scripts\\python.exe manage.py runserver",
+    "dev": "concurrently \"npm run watch\" \"npm run django\"",
+    "build": "tailwindcss -i ./static/tailwindcss/input.css -o ./static/tailwindcss/output.css --minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/algoWithSachin/financedaily.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/algoWithSachin/financedaily/issues"
+  },
+  "homepage": "https://github.com/algoWithSachin/financedaily#readme",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.3.0",
+    "tailwindcss": "^4.3.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

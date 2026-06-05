@@ -26,3 +26,6 @@ Thumbs.db
 # local PowerShell run script
 run.ps1
 boot.ps1
+
+# Node environment
+node_modules

@@ -1,4 +1,4 @@
-# Fintrack – Personal Finance Management Web Application
+# Fintrack – personal finance intelligence platform
 
 **Fintrack** is a Django-based web application designed to help users manage personal finances efficiently. It tracks income, expenses, and budgets, providing visual insights to make smarter financial decisions.
 

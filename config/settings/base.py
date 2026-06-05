@@ -20,13 +20,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'api',
     # your apps
-    'budget',
-    'record',
-    'users',
-    'dashboard',
-    'assistant',
+    'apps.budget',
+    'apps.record',
+    'apps.users',
+    'apps.dashboard',
+    'apps.assistant',
 
     # third-party apps
     'rest_framework',
@@ -114,3 +114,4 @@ X_FRAME_OPTIONS = "DENY"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+LOGIN_URL = "login"

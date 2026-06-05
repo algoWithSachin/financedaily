@@ -16,12 +16,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('users.urls')),
-    path('dashboard/', include('dashboard.urls')),
-    path('record/', include('record.urls')),
-    path('budget/', include('budget.urls')),
-    path('assistant/', include('assistant.urls'))
+    path('', include('apps.users.urls')),
+    path('dashboard/', include('apps.dashboard.urls')),
+    path('record/', include('apps.record.urls')),
+    path('budget/', include('apps.budget.urls')),
+    path('assistant/', include('apps.assistant.urls')),
+    path('api/', include('api.urls')),
 ]
+
+# Agar project DEV mode mein chal raha hai, toh debug_toolbar ke URLs add karo
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns = [
+        path("__debug__/", include(debug_toolbar.urls)),
+    ] + urlpatterns

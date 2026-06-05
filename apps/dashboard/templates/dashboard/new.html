@@ -1,0 +1,593 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard | FinanceDaily{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'style/variables.css' %}">
+<link rel="stylesheet" href="{% static 'dashboard/style/new.css' %}">
+<link rel="stylesheet" href="{% static 'tailwindcss/output.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard">
+
+  <!-- ==============================
+       DJANGO MESSAGES
+  ============================== -->
+  {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+        <p class="msg {{ message.tags }}">{{ message }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- ==============================
+       HEADER SECTION
+  ============================== -->
+  <header class="dash-header">
+    <div class="header-left">
+      <h1 class="dashboard-title">Dashboard Overview</h1>
+      <p class="dashboard-subtitle">Track your financial health at a glance</p>
+    </div>
+    
+
+    <div class="header-right">
+    
+      <a href="{% url 'add_record' %}" class="btn btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Add Transaction
+      </a>
+      <a href="{% url 'set_budget' %}" class="btn btn-secondary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+          <line x1="12" y1="8" x2="12" y2="16"></line>
+          <line x1="8" y1="12" x2="16" y2="12"></line>
+        </svg>
+        New Budget
+      </a>
+    </div>
+
+    <form method="GET" class="dashboard-filter d-flex gap-2">
+      
+      <select name="period" class="form-select" onchange="toggleCustomRange(this.value)">
+        
+        <option value="this_month"
+          {% if selected_period == "this_month" %}selected{% endif %}>
+          This Month
+        </option>
+
+        <option value="last_month"
+          {% if selected_period == "last_month" %}selected{% endif %}>
+          Last Month
+        </option>
+
+        <option value="this_week"
+          {% if selected_period == "this_week" %}selected{% endif %}>
+          This Week
+        </option>
+
+        <option value="last_week"
+          {% if selected_period == "last_week" %}selected{% endif %}>
+          Last Week
+        </option>
+
+        <option value="last_7_days"
+          {% if selected_period == "last_7_days" %}selected{% endif %}>
+          Last 7 Days
+        </option>
+
+        <option value="last_30_days"
+          {% if selected_period == "last_30_days" %}selected{% endif %}>
+          Last 30 Days
+        </option>
+
+        <option value="this_year"
+          {% if selected_period == "this_year" %}selected{% endif %}>
+          This Year
+        </option>
+
+        <option value="custom"
+          {% if selected_period == "custom" %}selected{% endif %}>
+          Custom Range
+        </option>
+
+      </select>
+
+      <div id="customRange"
+          style="{% if selected_period != 'custom' %}display:none;{% endif %}">
+
+        <input type="date"
+              name="start_date"
+              value="{{ request.GET.start_date }}"
+              class="form-control form-control-sm">
+
+        <input type="date"
+              name="end_date"
+              value="{{ request.GET.end_date }}"
+              class="form-control form-control-sm">
+
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        Apply
+      </button>
+
+    </form>
+  </header>
+
+  <!-- ==============================
+       KPI CARDS (Top Row)
+  ============================== -->
+  <section class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-icon icon-budgets">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+        </svg>
+      </div>
+      <div class="kpi-content">
+        <span class="kpi-label">Active Budgets</span>
+        <span class="kpi-value">{{ total_active_budgets|default:"0" }}</span>
+        <span class="kpi-trend trend-up">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+            <polyline points="17 6 23 6 23 12"></polyline>
+          </svg>  
+          On track
+        </span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon icon-income">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+          <polyline points="17 6 23 6 23 12"></polyline>
+        </svg>
+      </div>
+      <div class="kpi-content">
+        <span class="kpi-label">Total Income</span>
+        <span class="kpi-value income">+₹{{ total_income|floatformat:2|default:"0.00" }}</span>
+        <span class="kpi-trend trend-up">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <line x1="12" y1="19" x2="12" y2="5"></line>
+            <polyline points="5 12 12 5 19 12"></polyline>
+          </svg>
+          This period
+        </span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon icon-expense">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline>
+          <polyline points="17 18 23 18 23 12"></polyline>
+        </svg>
+      </div>
+      <div class="kpi-content">
+        <span class="kpi-label">Total Expenses</span>
+        <span class="kpi-value expense">-₹{{ total_expenses|floatformat:2|default:"0.00" }}</span>
+        <span class="kpi-trend trend-down">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <polyline points="19 12 12 19 5 12"></polyline>
+          </svg>
+          This period
+        </span>
+      </div>
+    </div>
+
+    <div class="kpi-card highlight">
+      <div class="kpi-icon icon-balance">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+      </div>
+      <div class="kpi-content">
+        <span class="kpi-label">Net Balance</span>
+        <span class="kpi-value balance">₹{{ total_balance|floatformat:2|default:"0.00" }}</span>
+        <span class="kpi-trend trend-neutral">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          Available
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       BUDGET HEALTH CARDS
+  ============================== -->
+  <section class="budgets-section">
+    <div class="section-title-bar">
+      <h3>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+          <path d="M2 17l10 5 10-5"></path>
+          <path d="M2 12l10 5 10-5"></path>
+        </svg>
+        Active Budgets
+      </h3>
+      <a href="{% url 'budget_list' %}" class="view-all-link">View all budgets →</a>
+    </div>
+
+    <div class="budget-cards">
+      {% for budget in active_budgets %}
+      <div class="budget-card">
+        <div class="budget-header">
+          <div class="budget-info">
+            <h4>{{ budget.name }}</h4>
+            <span class="budget-date">{{ budget.start_date|date:"M d" }} — {{ budget.end_date|date:"M d, Y" }}</span>
+          </div>
+          <div class="budget-amount">
+            <span class="spent">₹{{ budget.spent_amount|floatformat:0 }}</span>
+            <span class="total">/ ₹{{ budget.amount|floatformat:0 }}</span>
+          </div>
+        </div>
+
+        <div class="progress-track">
+          <div class="progress-fill 
+            {% if budget.used_percent > 90 %}danger
+            {% elif budget.used_percent > 75 %}warning
+            {% else %}good{% endif %}" 
+            style="width: {{ budget.used_percent|default:0 }}%">
+          </div>
+        </div>
+
+        <div class="budget-footer">
+          <span class="percent">{{ budget.used_percent|floatformat:1 }}% used</span>
+          <span class="remaining 
+            {% if budget.remaining < 0 %}negative{% endif %}">
+            ₹{{ budget.remaining|floatformat:0 }} left
+          </span>
+        </div>
+
+        {% if budget.is_expired %}
+        <div class="budget-badge expired">Expired</div>
+        {% elif budget.used_percent > 90 %}
+        <div class="budget-badge critical">Critical</div>
+        {% elif budget.used_percent > 75 %}
+        <div class="budget-badge warning">Caution</div>
+        {% endif %}
+      </div>
+      {% empty %}
+      <div class="budget-card empty">
+        <div class="empty-state">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-muted)" stroke-width="1.5">
+            <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+            <path d="M3 9h18"></path>
+          </svg>
+          <p>No active budgets</p>
+          <a href="{% url 'set_budget' %}" class="btn btn-sm">Create one</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ==============================
+       CHARTS ROW
+  ============================== -->
+  <section class="charts-row">
+    <div class="chart-panel large">
+      <div class="chart-header">
+        <h4>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 20V10"></path>
+            <path d="M12 20V4"></path>
+            <path d="M6 20v-6"></path>
+          </svg>
+          Income vs Expense Trend
+        </h4>
+        <div class="chart-legend">
+          <span class="legend-item"><span class="dot income-dot"></span>Income</span>
+          <span class="legend-item"><span class="dot expense-dot"></span>Expense</span>
+        </div>
+      </div>
+      <div class="chart-body">
+        <canvas id="trendChart"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-panel">
+      <div class="chart-header">
+        <h4>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 2a10 10 0 0 1 10 10"></path>
+          </svg>
+          Expense Split
+        </h4>
+      </div>
+      <div class="chart-body doughnut-body">
+        <canvas id="splitChart"></canvas>
+        <div class="doughnut-center">
+          <span class="center-label">Total</span>
+          <span class="center-value">₹{{ total_expenses|floatformat:0|default:"0" }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       CATEGORY & TRANSACTIONS
+  ============================== -->
+  <div class="bottom-grid">
+    <section class="chart-panel category-panel">
+      <div class="chart-header">
+        <h4>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="8" y1="6" x2="21" y2="6"></line>
+            <line x1="8" y1="12" x2="21" y2="12"></line>
+            <line x1="8" y1="18" x2="21" y2="18"></line>
+            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+          </svg>
+          Spending by Category
+        </h4>
+      </div>
+      <div class="chart-body">
+        <canvas id="categoryChart"></canvas>
+      </div>
+    </section>
+
+    <section class="transactions-panel">
+      <div class="section-title-bar">
+        <div>
+          <h3>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+              <line x1="1" y1="10" x2="23" y2="10"></line>
+            </svg>
+            Recent Transactions
+          </h3>
+          <p class="section-subtitle">Last {{ recent_5_records|length }} entries</p>
+        </div>
+        <a href="{% url 'record_list' %}" class="view-all-link">View all →</a>
+      </div>
+
+      <div class="transactions-list">
+        {% for t in recent_5_records %}
+        <div class="transaction-item">
+          <div class="tx-icon {% if t.type == 'Income' %}tx-income{% else %}tx-expense{% endif %}">
+            {% if t.type == 'Income' %}
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="12" y1="19" x2="12" y2="5"></line>
+              <polyline points="5 12 12 5 19 12"></polyline>
+            </svg>
+            {% else %}
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <polyline points="19 12 12 19 5 12"></polyline>
+            </svg>
+            {% endif %}
+          </div>
+          <div class="tx-details">
+            <span class="tx-category">{{ t.category }}</span>
+            <span class="tx-desc">{{ t.description|default:"No description" }}</span>
+            <span class="tx-date">{{ t.date|date:"M d, Y" }}</span>
+          </div>
+          <div class="tx-amount {% if t.type == 'Income' %}amount-income{% else %}amount-expense{% endif %}">
+            {% if t.type == 'Income' %}+{% else %}-{% endif %}₹{{ t.amount|floatformat:2 }}
+          </div>
+        </div>
+        {% empty %}
+        <div class="empty-state">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-muted)" stroke-width="1.5">
+            <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+            <path d="M3 9h18"></path>
+            <path d="M9 16h.01"></path>
+            <path d="M15 16h.01"></path>
+          </svg>
+          <p>No transactions yet</p>
+          <a href="{% url 'add_record' %}" class="btn btn-sm">Add your first</a>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+
+</div>
+
+<!-- ==============================
+     CHART SCRIPTS
+================================= -->
+<script>
+// Income vs Expense Trend (Area Chart)
+const trendCtx = document.getElementById('trendChart').getContext('2d');
+new Chart(trendCtx, {
+  type: 'line',
+  data: {
+    labels: {{ trend_labels|safe|default:'["Jan", "Feb", "Mar", "Apr", "May", "Jun"]' }},
+    datasets: [
+      {
+        label: 'Income',
+        data: {{ trend_income|safe|default:'[12000, 15000, 13000, 18000, 16000, 20000]' }},
+        borderColor: '#2a9d8f',
+        backgroundColor: 'rgba(42, 157, 143, 0.1)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        pointBackgroundColor: '#2a9d8f',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2
+      },
+      {
+        label: 'Expense',
+        data: {{ trend_expense|safe|default:'[8000, 9500, 11000, 8500, 12000, 9000]' }},
+        borderColor: '#e63946',
+        backgroundColor: 'rgba(230, 57, 70, 0.1)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        pointBackgroundColor: '#e63946',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#1f2933',
+        padding: 12,
+        cornerRadius: 8,
+        displayColors: true,
+        callbacks: {
+          label: function(context) {
+            return context.dataset.label + ': ₹' + context.parsed.y.toLocaleString();
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { display: false },
+        ticks: { color: '#6b7280', font: { size: 11 } }
+      },
+      y: {
+        beginAtZero: true,
+        grid: { color: 'rgba(0,0,0,0.04)' },
+        ticks: {
+          color: '#6b7280',
+          font: { size: 11 },
+          callback: function(value) {
+            return '₹' + (value / 1000).toFixed(0) + 'k';
+          }
+        }
+      }
+    }
+  }
+});
+
+// Expense vs Income Split (Doughnut with center text)
+const splitCtx = document.getElementById('splitChart').getContext('2d');
+new Chart(splitCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Expenses', 'Income'],
+    datasets: [{
+      data: [{{ total_expenses|default:0 }}, {{ total_income|default:0 }}],
+      backgroundColor: ['#e63946', '#2a9d8f'],
+      borderWidth: 0,
+      hoverOffset: 4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '75%',
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {
+          usePointStyle: true,
+          pointStyle: 'circle',
+          padding: 15,
+          color: '#6b7280',
+          font: { size: 12 }
+        }
+      },
+      tooltip: {
+        backgroundColor: '#1f2933',
+        padding: 12,
+        cornerRadius: 8,
+        callbacks: {
+          label: function(context) {
+            return context.label + ': ₹' + context.parsed.toLocaleString();
+          }
+        }
+      }
+    }
+  }
+});
+
+// Category Breakdown (Horizontal Bar)
+const catCtx = document.getElementById('categoryChart').getContext('2d');
+new Chart(catCtx, {
+  type: 'bar',
+  data: {
+    labels: {{ category_labels|safe|default:'["Food", "Transport", "Bills", "Entertainment", "Shopping"]' }},
+    datasets: [{
+      label: 'Amount',
+      data: {{ category_values|safe|default:'[4500, 2300, 5200, 1800, 3100]' }},
+      backgroundColor: [
+        '#005f73', '#0a9396', '#94d2bd', '#e9c46a', '#f4a261'
+      ],
+      borderRadius: 6,
+      barThickness: 24
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#1f2933',
+        padding: 12,
+        cornerRadius: 8,
+        callbacks: {
+          label: function(context) {
+            return '₹' + context.parsed.x.toLocaleString();
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        beginAtZero: true,
+        grid: { color: 'rgba(0,0,0,0.04)' },
+        ticks: {
+          color: '#6b7280',
+          font: { size: 11 },
+          callback: function(value) {
+            return '₹' + (value / 1000).toFixed(0) + 'k';
+          }
+        }
+      },
+      y: {
+        grid: { display: false },
+        ticks: {
+          color: '#1f2933',
+          font: { size: 12, weight: '500' }
+        }
+      }
+    }
+  }
+});
+
+
+function toggleCustomRange(value) {
+    const customRange = document.getElementById("customRange");
+
+    if (value === "custom") {
+        customRange.style.display = "flex";
+    } else {
+        customRange.style.display = "none";
+    }
+}
+
+</script>
+
+{% endblock %}'''
